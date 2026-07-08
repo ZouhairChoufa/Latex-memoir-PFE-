@@ -1,0 +1,21 @@
+# Fichiers temporaires LaTeX
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.lof
+*.lot
+*.bcf
+*.run.xml
+
+# Dossiers Python / Environnements virtuels (au cas où tu as tes scripts dans le même repo)
+__pycache__/
+*.pyc
+.env/
+venv/

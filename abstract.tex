@@ -1,0 +1,146 @@
+% ============================================================
+%  Résumé (FR) & Abstract (EN) — Mémoire de Master BIBDA
+%  CHOUFA Zouhair
+% ============================================================
+
+% ─────────────────────────────────────────────────────────────
+%  RÉSUMÉ (FRANÇAIS)
+% ─────────────────────────────────────────────────────────────
+\clearpage
+\thispagestyle{empty}
+
+% Local adjustment to reduce top spacing and center the title
+\begin{center}
+    \vspace*{-1cm} % Pulls the title up into the empty white space
+    {\Huge\bfseries Résumé}
+    \vspace{0.5cm} % Space before the paragraph starts
+\end{center}
+\addcontentsline{toc}{chapter}{Résumé}
+
+La dimension « Variété » du Big Data se traduit, en contexte
+industriel, par la coexistence de multiples sources de données
+tabulaires hétérogènes (formats, schémas, conventions de nommage),
+rendant leur intégration sémantique difficile à automatiser à grande
+échelle. Les Knowledge Graphs (KG), fondés sur le modèle RDF et les
+standards du Web sémantique, offrent un cadre formel pour unifier ces
+sources autour d'une ontologie commune ; toutefois, les pipelines de
+construction existants restent le plus souvent fragmentés,
+partiellement manuels, ou insuffisamment évalués de bout en bout.
+
+Ce mémoire propose un pipeline complet, modulaire et reproductible de
+transformation de données tabulaires hétérogènes en Knowledge Graph.
+L'architecture proposée s'articule en quatre modules~: (i) ingestion
+multi-source et profilage automatique de la qualité des données ;
+(ii) \textit{schema matching} hybride combinant une approche
+symbolique par embeddings Sentence-BERT et un agent LLM (LLaMA~3.1
+via Groq, orchestré par LangChain), suivi de la génération
+automatique de règles de mapping YARRRML ; (iii) triplification
+sémantique déclarative des données au moyen du moteur Morph-KGC ;
+(iv) résolution d'entités inter-sources par le modèle probabiliste de
+Fellegi-Sunter (bibliothèque Splink), complétée par une validation
+formelle du graphe produit via des contraintes SHACL. L'ensemble du
+pipeline est conteneurisé avec Docker Compose afin de garantir sa
+reproductibilité et son industrialisation potentielle.
+
+L'approche a été évaluée sur un gold standard annoté, construit à
+partir d'un jeu de données transactionnel augmenté artificiellement
+(\texttt{Faker}) et scindé en deux sources hétérogènes simulant des
+silos organisationnels distincts. Les résultats montrent que
+l'architecture hybride de \textit{schema matching} atteint un
+F1-score de 0,870 après calibration du seuil de décision
+($\tau^{*} = 0{,}82$), égalant ou surpassant chacune de ses
+composantes utilisée isolément tout en maîtrisant le coût des appels
+LLM. Le module de triplification génère 82\,420 triplets RDF en
+seulement 7 secondes, tandis que la résolution d'entités, évaluée sur
+1\,600 paires réelles, atteint un F1-score de 0,990 après recalibrage
+des règles de blocage ($\lambda^{*} = 0{,}90$). Une discussion
+critique structurée autour des menaces classiques à la validité
+expérimentale (interne, externe, de construit et de conclusion)
+complète cette évaluation et identifie les limites du travail,
+notamment le caractère synthétique du jeu de données et la
+sensibilité du modèle de résolution d'entités à la configuration des
+règles de blocage.
+
+Ce travail démontre ainsi la faisabilité d'un pipeline hybride
+symbolique-neuronal pour la construction automatisée et évaluable de
+Knowledge Graphs à partir de données tabulaires hétérogènes, et ouvre
+plusieurs perspectives~: validation sur des données réelles
+anonymisées, définition automatique de clés de blocage adaptatives,
+et substitution des appels LLM distants par des modèles open source
+déployés localement afin de réduire la latence à grande échelle.
+
+\vspace{0.8cm}
+\noindent\textbf{Mots-clés~:} Big Data, Knowledge Graph, hétérogénéité
+des données, \textit{schema matching}, Large Language Models,
+RDF, YARRRML, Morph-KGC, résolution d'entités, SHACL, reproductibilité.
+
+\newpage
+
+% ─────────────────────────────────────────────────────────────
+%  ABSTRACT (ENGLISH)
+% ─────────────────────────────────────────────────────────────
+\thispagestyle{empty}
+
+\begin{center}
+    \vspace*{-1cm} % Pulls the Abstract up identically
+    {\Huge\bfseries Abstract}
+    \vspace{0.5cm}
+\end{center}
+\addcontentsline{toc}{chapter}{Abstract}
+
+The "Variety" dimension of Big Data manifests, in industrial
+settings, as the coexistence of multiple heterogeneous tabular data
+sources differing in format, schema, and naming conventions, making
+their semantic integration difficult to automate at scale. Knowledge
+Graphs (KGs), built upon the RDF model and Semantic Web standards,
+provide a formal framework for unifying such sources around a shared
+ontology; however, existing construction pipelines remain, for the
+most part, fragmented, partially manual, or insufficiently evaluated
+end-to-end.
+
+This thesis proposes a complete, modular, and reproducible pipeline
+for transforming heterogeneous tabular data into a Knowledge Graph.
+The proposed architecture is organized into four modules: (i)
+multi-source ingestion and automated data quality profiling; (ii) a
+hybrid schema matching approach combining a symbolic
+Sentence-BERT embedding method with an LLM agent (LLaMA~3.1 via Groq,
+orchestrated through LangChain), followed by the automatic generation
+of YARRRML mapping rules; (iii) declarative semantic triplification
+of the data using the Morph-KGC engine; (iv) cross-source entity
+resolution based on the Fellegi-Sunter probabilistic model (Splink
+library), complemented by a formal validation of the resulting graph
+through SHACL constraints. The entire pipeline is containerized with
+Docker Compose to ensure reproducibility and potential
+industrialization.
+
+The approach was evaluated on an annotated gold standard, built from
+a transactional dataset artificially augmented via \texttt{Faker} and
+split into two heterogeneous sources simulating distinct
+organizational silos. Results show that the hybrid schema matching
+architecture achieves an F1-score of 0.870 after calibrating the
+decision threshold ($\tau^{*} = 0.82$), matching or outperforming
+each of its components used in isolation while keeping LLM API costs
+under control. The triplification module generates 82,420 RDF
+triples in only 7 seconds, while entity resolution, evaluated on
+1,600 real pairs, reaches an F1-score of 0.990 after recalibrating
+the blocking rules ($\lambda^{*} = 0.90$). A critical discussion
+structured around the classical threats to experimental validity
+(internal, external, construct, and conclusion validity) complements
+this evaluation and identifies the work's limitations, notably the
+synthetic nature of the dataset and the sensitivity of the entity
+resolution model to blocking rule configuration.
+
+This work thus demonstrates the feasibility of a hybrid
+symbolic-neural pipeline for the automated and evaluable construction
+of Knowledge Graphs from heterogeneous tabular data, and opens
+several avenues for future work: validation on real anonymized data,
+automatic definition of adaptive blocking keys, and the substitution
+of remote LLM calls with locally deployed open-source models to
+reduce latency at scale.
+
+\vspace{0.8cm}
+\noindent\textbf{Keywords:} Big Data, Knowledge Graph, data
+heterogeneity, schema matching, Large Language Models, RDF, YARRRML,
+Morph-KGC, entity resolution, SHACL, reproducibility.
+
+\newpage

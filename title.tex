@@ -1,0 +1,62 @@
+% --- title.tex ---
+\begin{titlepage}
+\begin{tikzpicture}[remember picture, overlay]
+    \draw[line width=1.5pt] ([shift={(1cm,-1cm)}]current page.north west) rectangle ([shift={(-1cm,1cm)}]current page.south east);
+    \draw[line width=0.5pt] ([shift={(1.1cm,-1.1cm)}]current page.north west) rectangle ([shift={(-1.1cm,1.1cm)}]current page.south east);
+\end{tikzpicture}
+
+\begin{center}
+\noindent
+\begin{minipage}[c]{0.2\textwidth}
+    \includegraphics[width=\textwidth]{pics/faculte_logo.jpg}
+\end{minipage}%
+\begin{minipage}[c]{0.6\textwidth}
+    \centering
+    \small \textbf{UNIVERSITÉ CHOUAIB DOUKKALI}\\[0.2cm]
+    \small \textbf{FACULTÉ DES SCIENCES -- EL JADIDA}\\[0.2cm]
+    \small \textbf{DÉPARTEMENT D'INFORMATIQUE}\\[0.2cm]
+    \textcolor{lineblue}{\rule{0.8\textwidth}{1.5pt}}
+\end{minipage}%
+\begin{minipage}[c]{0.2\textwidth}
+    \raggedleft
+    \includegraphics[width=\textwidth]{pics/University_logo.jpg}
+\end{minipage}
+
+\vspace{1.2cm}
+{\Huge \textbf{Mémoire de Master}}\\[1cm]
+\textcolor{lineblue}{\rule{0.9\textwidth}{1.5pt}}\\[0.5cm]
+{\large \textbf{Pour l’obtention du diplôme de Master en Business Intelligence and Big Data Analytics}}\\[0.5cm]
+\textcolor{lineblue}{\rule{0.9\textwidth}{1.5pt}}\\[1.5cm]
+
+{\large \textbf{Sur le sujet de :}}\\[0.8cm]
+
+\begin{tikzpicture}
+    \node[
+        draw=bordergreen, 
+        rounded corners=12pt, 
+        inner sep=15pt, 
+        text width=0.9\textwidth, 
+        align=center,
+        font=\LARGE\bfseries,
+        text=titleblue 
+    ] {
+        Gestion de l'hétérogénéité des données tabulaires
+        pour la génération de Knowledge Graphs \\ (Big Data + KG)
+    };  
+\end{tikzpicture}\\[1cm]
+
+{\large \textit{\textbf{Par :}}}\\[0.3cm]
+{\large \textbf{CHOUFA Zouhair}}\\[1cm]
+
+Soutenu le : 10-07-2026 , devant le jury composé de :\\[0.8cm]
+
+\begin{tabular}{p{4.5cm} p{6.5cm} p{3cm}}
+    \textbf{Pr. A. MADANI} & Faculté des Sciences - El Jadida & Encadrant \\
+    \textbf{Pr. } & Faculté des Sciences - El Jadida & Examinateur \\
+    \textbf{Pr. } & Faculté des Sciences - El Jadida & Examinateur \\
+\end{tabular}
+\vspace{1cm}
+\vfill
+Année universitaire : 2025-2026
+\end{center}
+\end{titlepage}

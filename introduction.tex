@@ -1,0 +1,135 @@
+% ============================================================
+%  Introduction Générale — Mémoire de Master BIBDA
+%  CHOUFA Zouhair
+% ============================================================
+\chapter*{Introduction Générale}
+\addcontentsline{toc}{chapter}{Introduction Générale}
+\label{chap:introduction_generale}
+ 
+\section*{Contexte général}
+\addcontentsline{toc}{section}{Contexte général}
+ 
+L'ère du Big Data a profondément transformé la manière dont les
+organisations produisent, stockent et exploitent leurs données.
+Parmi les cinq dimensions classiquement associées à ce paradigme —
+Volume, Vélocité, Variété, Véracité et Valeur —, la \textbf{Variété}
+constitue sans doute le défi le plus structurel pour les entreprises
+modernes. Une organisation typique dispose rarement d'une source de
+données unique et homogène~: ses informations sont dispersées entre
+systèmes CRM, bases de données transactionnelles, fichiers plats
+CSV, systèmes d'information des ressources humaines (SIRH) ou
+tableurs, chacun obéissant à des conventions de nommage, des schémas
+et des formats qui lui sont propres. Cette fragmentation, souvent
+qualifiée de phénomène des \textit{silos de données}, constitue un
+frein majeur à toute exploitation analytique transversale et
+cohérente de l'information disponible.
+ 
+Les \textbf{Knowledge Graphs} (KG), fondés sur le modèle de données
+RDF (\textit{Resource Description Framework}) et sur les standards du
+Web sémantique — OWL, SPARQL, SHACL —, se sont imposés au cours de la
+dernière décennie comme un cadre formel particulièrement adapté pour
+répondre à ce défi d'intégration. En représentant les entités et
+leurs relations sous forme de triplets sujet-prédicat-objet ancrés
+dans une ontologie de domaine partagée, les KG permettent de dépasser
+la rigidité du modèle relationnel classique et d'unifier
+sémantiquement des sources hétérogènes autour d'un vocabulaire
+commun. Cette approche a démontré sa valeur dans des contextes aussi
+variés que les moteurs de recherche, les systèmes de recommandation,
+la biomédecine ou l'intégration de données d'entreprise.
+ 
+\section*{Problématique}
+\addcontentsline{toc}{section}{Problématique}
+ 
+Si la valeur des Knowledge Graphs pour l'intégration de données
+n'est plus à démontrer, leur \textbf{construction automatisée} à
+partir de sources tabulaires hétérogènes demeure un problème ouvert
+et largement non résolu de façon industrialisable. La littérature
+existante propose des solutions ponctuelles pour chacune des étapes
+du processus — schema matching, triplification déclarative via les
+standards R2RML/RML, résolution d'entités, validation de la
+qualité du graphe produit — mais rarement de manière intégrée au
+sein d'un pipeline unique, reproductible et évaluable de bout en
+bout. De plus, l'émergence récente des grands modèles de langage
+(\textit{Large Language Models}, LLM) ouvre des perspectives
+prometteuses pour automatiser des tâches historiquement coûteuses en
+intervention humaine, telles que l'alignement sémantique de schémas
+hétérogènes, mais leur intégration dans des architectures de
+production robustes, maîtrisées en coût et rigoureusement évaluées,
+reste largement à explorer.
+ 
+Ce mémoire s'inscrit directement dans ce contexte et cherche à
+répondre à la question de recherche suivante~: \textit{comment
+concevoir un pipeline automatisé, modulaire et reproductible, capable
+de transformer des données tabulaires hétérogènes et multi-sources en
+un Knowledge Graph unifié, tout en garantissant la qualité et la
+validité formelle du graphe produit à chaque étape du processus~?}
+ 
+\section*{Objectifs du mémoire}
+\addcontentsline{toc}{section}{Objectifs du mémoire}
+ 
+Pour répondre à cette problématique, ce travail poursuit quatre
+objectifs principaux~:
+ 
+\begin{itemize}
+    \item \textbf{Concevoir} une architecture de pipeline modulaire
+    couvrant l'ensemble de la chaîne de transformation~: ingestion et
+    profilage qualité des sources, alignement sémantique des schémas,
+    triplification RDF déclarative et résolution d'entités
+    inter-sources ;
+    \item \textbf{Combiner} de manière hybride des approches
+    symboliques (embeddings Sentence-BERT) et neuronales fondées sur
+    les LLM (agent LangChain) pour le \textit{schema matching}, en
+    visant à maximiser la qualité d'alignement tout en maîtrisant le
+    coût computationnel des appels aux modèles de langage ;
+    \item \textbf{Automatiser} la génération des règles de mapping
+    YARRRML et leur exécution via le moteur Morph-KGC, ainsi que la
+    validation formelle du graphe de connaissances produit au moyen
+    de contraintes SHACL ;
+    \item \textbf{Évaluer} quantitativement chaque module du pipeline
+    sur un gold standard annoté, et discuter de manière critique la
+    validité, les limites et la généralisabilité des résultats
+    obtenus.
+\end{itemize}
+ 
+\section*{Contributions}
+\addcontentsline{toc}{section}{Contributions}
+ 
+La contribution de ce mémoire se situe à l'intersection de trois
+axes de recherche généralement traités séparément dans la
+littérature~: la triplification déclarative de données (RML/YARRRML),
+le \textit{schema matching} hybride, et l'automatisation par LLM.
+Le pipeline proposé intègre ces trois dimensions au sein d'une
+architecture unique, entièrement conteneurisée via Docker Compose,
+et dont chaque module fait l'objet d'une évaluation quantitative
+indépendante sur un gold standard construit spécifiquement pour ce
+travail. Cette approche intégrée et évaluable de bout en bout
+constitue, à notre connaissance, une réponse originale aux lacunes
+identifiées dans l'état de l'art~: fragmentation des pipelines
+existants, absence d'évaluation standardisée, reproductibilité
+insuffisante et déficit d'études portant sur la scalabilité.
+ 
+\section*{Organisation du mémoire}
+\addcontentsline{toc}{section}{Organisation du mémoire}
+ 
+Ce mémoire est structuré en quatre chapitres. Le
+\textbf{Chapitre~1} dresse un état de l'art structuré autour du
+paradigme Big Data, des fondements des Knowledge Graphs, des
+approches de transformation tabulaire vers RDF et de
+\textit{schema matching}, ainsi que de l'apport récent des LLM à ces
+problématiques ; il se conclut par le positionnement précis de notre
+contribution par rapport aux travaux existants. Le
+\textbf{Chapitre~2} présente la méthodologie et la conception
+détaillée de l'architecture du pipeline proposé, module par module,
+ainsi que le protocole d'évaluation et la constitution du gold
+standard. Le \textbf{Chapitre~3} décrit l'implémentation concrète de
+ce pipeline dans un environnement Cloud réel, les résultats obtenus
+pour chaque module, ainsi qu'une étude d'ablation isolant la
+contribution propre de chaque composant du module de
+\textit{schema matching}. Enfin, le \textbf{Chapitre~4} propose une
+évaluation approfondie et comparative des résultats~: calibration
+des hyperparamètres critiques du pipeline, positionnement par rapport
+à l'état de l'art, et discussion critique structurée autour des
+menaces classiques à la validité expérimentale. Une conclusion
+générale synthétise les apports de ce travail, en discute les limites
+et propose des perspectives de recherche future.
+ 

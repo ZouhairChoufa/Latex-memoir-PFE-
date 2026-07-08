@@ -1,0 +1,117 @@
+% ============================================================
+%  Conclusion Générale — Mémoire de Master BIBDA
+%  CHOUFA Zouhair
+% ============================================================
+\chapter*{Conclusion Générale}
+\addcontentsline{toc}{chapter}{Conclusion Générale}
+\label{chap:conclusion_generale}
+
+\section*{Synthèse du travail réalisé}
+\addcontentsline{toc}{section}{Synthèse du travail réalisé}
+
+Ce mémoire s'est donné pour objectif de répondre à une question posée
+dès l'introduction générale~: comment concevoir un pipeline
+automatisé, modulaire et reproductible, capable de transformer des
+données tabulaires hétérogènes et multi-sources en un Knowledge Graph
+unifié, tout en garantissant la qualité et la validité formelle du
+graphe produit à chaque étape du processus~? Le cheminement suivi
+pour y répondre s'est appuyé sur quatre chapitres complémentaires.
+
+Le \textbf{Chapitre~1} a dressé un état de l'art structuré, mettant
+en évidence que le défi de la Variété au sein du Big Data ne pouvait
+être résolu de façon automatisée et scalable par les approches
+relationnelles classiques, et que si les fondements des Knowledge
+Graphs (RDF, OWL, SPARQL, SHACL) offrent un cadre formel adapté, les
+pipelines existants demeurent fragmentés et insuffisamment évalués.
+Le \textbf{Chapitre~2} a traduit ce constat en une architecture
+concrète, articulée en quatre modules~: ingestion et profilage,
+\textit{schema matching} hybride, triplification déclarative et
+résolution d'entités, complétée par un protocole d'évaluation rigoureux
+fondé sur un gold standard annoté. Le \textbf{Chapitre~3} a validé
+cette architecture par une implémentation effective dans un
+environnement Cloud reproductible, produisant des résultats
+opérationnels concrets pour chacun des modules. Enfin, le
+\textbf{Chapitre~4} a dépassé la simple description de ces résultats
+pour proposer une évaluation critique et comparative, calibrant
+explicitement les hyperparamètres du pipeline et le positionnant par
+rapport à la littérature.
+
+\section*{Principaux résultats obtenus}
+\addcontentsline{toc}{section}{Principaux résultats obtenus}
+
+Trois résultats principaux ressortent de ce travail. Premièrement,
+l'architecture hybride de \textit{schema matching}, combinant
+embeddings Sentence-BERT et agent LLM (LLaMA~3.1 via LangChain),
+atteint un F1-score de 0,870 après calibration explicite du seuil de
+décision ($\tau^{*} = 0{,}82$), démontrant empiriquement qu'une telle
+combinaison égalise ou dépasse chacune de ses composantes utilisée
+isolément, tout en maîtrisant le coût des appels API — un résultat
+qui n'est pas un gain de précision arbitraire mais le fruit d'une
+procédure d'optimisation reproductible. Deuxièmement, le module de
+triplification sémantique, fondé sur le moteur Morph-KGC et des
+règles YARRRML auto-générées, a permis de produire 82\,420 triplets
+RDF en seulement 7~secondes, illustrant la scalabilité de l'approche
+déclarative retenue. Troisièmement, le module de résolution
+d'entités, évalué sur 1\,600 paires réelles issues des deux sources
+simulées, atteint un F1-score de 0,990 après recalibrage des règles
+de blocage ($\lambda^{*} = 0{,}90$), confirmant la robustesse du
+modèle probabiliste de Fellegi-Sunter pour la génération des ponts
+sémantiques \texttt{owl:sameAs} constituant le graphe unifié final.
+
+Au-delà de ces métriques, la discussion critique menée au
+Chapitre~4 autour des quatre menaces classiques à la validité
+expérimentale — de construit, interne, externe et de conclusion — a
+permis de circonscrire précisément les conditions de généralisation
+de ces résultats, renforçant ainsi la rigueur scientifique de
+l'évaluation proposée plutôt que de se limiter à un rapport de
+performances brutes.
+
+\section*{Limites du travail}
+\addcontentsline{toc}{section}{Limites du travail}
+
+Ce travail présente plusieurs limites qu'il convient de reconnaître
+explicitement. Le pipeline a été évalué sur un jeu de données
+entièrement \textbf{synthétique}, généré via la bibliothèque
+\texttt{Faker} à partir d'un dataset transactionnel public~; si ce
+choix garantit la maîtrise et la reproductibilité de la vérité
+terrain, il limite la portée externe des résultats, les données
+réelles présentant typiquement des irrégularités et incohérences
+plus complexes. Par ailleurs, le modèle Splink de résolution
+d'entités s'est révélé fortement \textbf{sensible aux règles de
+blocage} retenues, un blocage mal calibré pouvant rendre le modèle
+inopérant indépendamment du seuil de décision~$\lambda$. L'architecture
+proposée suppose également l'existence préalable d'une
+\textbf{ontologie de domaine} bien formée, ce qui n'est pas
+systématiquement le cas dans tous les contextes industriels. Enfin,
+à très grande échelle, le \textbf{coût et la latence des appels LLM}
+distants pourraient constituer un goulot d'étranglement pour des
+pipelines traitant simultanément un grand nombre de sources.
+
+\section*{Perspectives de recherche}
+\addcontentsline{toc}{section}{Perspectives de recherche}
+
+Plusieurs prolongements de ce travail apparaissent naturellement à
+l'issue de cette analyse. Une \textbf{validation sur des données
+réelles anonymisées}, issues d'un contexte industriel effectif,
+permettrait de confirmer la généralisabilité des performances
+obtenues sur données synthétiques. La définition de \textbf{clés de
+blocage adaptatives}, apprises automatiquement plutôt que fixées
+manuellement, constitue une direction de recherche ouverte pour
+renforcer la robustesse du module de résolution d'entités. L'ajout
+d'une étape de \textbf{construction ontologique automatique} en
+amont du pipeline permettrait de s'affranchir de l'hypothèse d'une
+ontologie de domaine préexistante. Enfin, la \textbf{substitution des
+appels LLM distants par des modèles open source déployés localement}
+(par exemple Mistral ou LLaMA via Ollama), directement supportée par
+l'abstraction LangChain sans modification de l'architecture du
+Module~2, permettrait de réduire la latence cumulée et la dépendance
+à des API tierces pour un déploiement à très grande échelle.
+
+En définitive, ce mémoire démontre qu'il est possible de concevoir
+un pipeline hybride, à la fois symbolique et neuronal, pour la
+construction automatisée de Knowledge Graphs à partir de données
+tabulaires hétérogènes, tout en soumettant chacune de ses composantes
+à une évaluation quantitative rigoureuse. Il constitue, à ce titre,
+une base solide et reproductible pour de futurs travaux visant
+l'industrialisation de tels pipelines dans des contextes
+organisationnels réels.

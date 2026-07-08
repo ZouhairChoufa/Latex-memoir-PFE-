@@ -1,0 +1,796 @@
+% ============================================================
+%  CHAPITRE 1 — État de l'art
+%  Mémoire de Master BIBDA — CHOUFA ZOUHAIR
+%  Université Chouaib Doukkali — Faculté des Sciences El Jadida
+%  Titre : Gestion de l'hétérogénéité des données tabulaires
+%           pour la génération de Knowledge Graphs (Big Data + KG)
+% ============================================================
+
+\chapter{État de l'art}\label{chap:etat_art}
+
+% ─────────────────────────────────────────────────────────────
+\section{Introduction}\label{sec:intro_etat_art}
+% ─────────────────────────────────────────────────────────────
+Dans l'écosystème numérique contemporain, les organisations produisent et accumulent des données issues de sources toujours plus nombreuses et hétérogènes : fichiers tabulaires (\texttt{CSV}, \texttt{Excel}), bases de données relationnelles, flux JSON/XML, entrepôts analytiques, etc. L'intégration cohérente de ces sources constitue l'un des défis les plus critiques de l'ingénierie des données moderne, car elle conditionne directement la qualité des analyses et des décisions qui en découlent.
+
+Face à cette complexité, les \textit{Knowledge Graphs} (KGs) s'imposent comme une infrastructure sémantique particulièrement adaptée : en modélisant les données non plus comme des valeurs isolées dans des tables, mais comme un réseau d'entités reliées par des relations nommées, ils permettent une interopérabilité et un raisonnement automatique difficiles à atteindre par les approches relationnelles classiques. La transformation automatique de données tabulaires hétérogènes vers cette représentation sémantique soulève cependant des questions scientifiques encore largement ouvertes, notamment autour du \textit{schema matching}, de la triplification déclarative, et du rôle croissant des Large Language Models (LLMs) dans ces pipelines.
+
+Ce chapitre dresse un panorama structuré et critique des travaux existants dans ce domaine. Nous commençons par situer la problématique dans le contexte du Big Data (section~\ref{sec:bigdata}), avant d'introduire les fondements des Knowledge Graphs (section~\ref{sec:intro_kg}). Nous analysons ensuite les approches de construction automatique et d'intégration de données hétérogènes (section~\ref{sec:construction_auto}), la transformation tabulaire vers RDF (section~\ref{sec:tabulaire_rdf}), le schema matching et l'alignement d'ontologies (section~\ref{sec:schema_matching}), et l'apport des LLMs (section~\ref{sec:llms}). Nous concluons par une synthèse des limites identifiées (section~\ref{sec:defis}) et un positionnement précis de notre contribution (section~\ref{sec:positionnement}).
+
+% ─────────────────────────────────────────────────────────────
+\section{Le Paradigme Big Data et les Défis de l'Intégration}\label{sec:bigdata}
+% ─────────────────────────────────────────────────────────────
+\subsection{Les dimensions du Big Data}
+Le concept de Big Data est traditionnellement caractérisé par le modèle des « 4V », initialement introduit pour décrire les propriétés fondamentales des données à grande échelle : le \textbf{Volume} (la quantité de données produites, désormais mesurée en pétaoctets dans les grandes organisations), la \textbf{Vélocité} (la vitesse à laquelle les données sont générées et doivent être traitées), la \textbf{Véracité} (la fiabilité et la qualité des données collectées) et, surtout dans le cadre du présent travail, la \textbf{Variété}.
+
+% \begin{figure}[ht]
+%     \centering
+%     % ── Description visuelle ──────────────────────────────────────────────────
+%     % Schéma en quatre quadrants : chaque quadrant représente un « V » avec
+%     % une icône représentative (disque pour Volume, chronomètre pour Vélocité,
+%     % bouclier pour Véracité, arbre de sources pour Variété).
+%     % Le quadrant « Variété » est mis en évidence par un contour coloré plus épais
+%     % car c'est la dimension centrale du présent travail.
+%     % ─────────────────────────────────────────────────────────────────────────
+%     %
+%     % Code Mermaid correspondant (commentaire LaTeX) :
+%     % graph TD
+%     %   V1[Volume\nPétaoctets de données] --> BD((Big Data))
+%     %   V2[Vélocité\nFlux en temps réel] --> BD
+%     %   V3[Véracité\nQualité et fiabilité] --> BD
+%     %   V4[Variété\nCSV · JSON · XML · RDB] --> BD
+%     %   style V4 fill:#f0ad4e,stroke:#e08a00,color:#000
+%     %
+%     \fbox{\parbox{0.85\textwidth}{\centering\vspace{1.2cm}
+%     \textit{[Figure : Les 4V du Big Data — insérer ici le diagramme quadrants.]}\\
+%     \vspace{1.2cm}}}
+%     \caption{Les quatre dimensions du Big Data et la place centrale de la Variété dans la problématique d'intégration.}
+%     \label{fig:4v_bigdata}
+% \end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        node distance=3.5cm,
+        % Style pour les 3 V classiques
+        standardV/.style={
+            draw=gray!80, 
+            line width=1pt, 
+            rounded corners=8pt, 
+            minimum width=4cm, 
+            minimum height=2cm, 
+            align=center, 
+            fill=gray!5,
+            font=\small
+        },
+        % Style mis en évidence pour la Variété (votre sujet)
+        highlightV/.style={
+            draw=bordergreen, 
+            line width=2pt, 
+            rounded corners=8pt, 
+            minimum width=4.2cm, 
+            minimum height=2.2cm, 
+            align=center, 
+            fill=bordergreen!10,
+            font=\small
+        },
+        % Style pour le centre
+        centerNode/.style={
+            circle, 
+            draw=titleblue, 
+            line width=1.5pt, 
+            minimum size=3cm, 
+            align=center, 
+            fill=titleblue!10, 
+            font=\large\bfseries\color{titleblue}
+        }
+    ]
+
+    % Nœud Central
+    \node[centerNode] (BD) {Big Data};
+
+    % Les 4 Nœuds (Quadrants)
+    \node[standardV] (V1) [above left of=BD, xshift=-2cm, yshift=1.5cm] {
+        \textbf{\large Volume}\\[0.1cm]
+        Pétaoctets de données\\
+        Stockage massif
+    };
+    
+    \node[standardV] (V2) [above right of=BD, xshift=2cm, yshift=1.5cm] {
+        \textbf{\large Vélocité}\\[0.1cm]
+        Flux en temps réel\\
+        Traitement rapide
+    };
+    
+    \node[standardV] (V3) [below left of=BD, xshift=-2cm, yshift=-1.5cm] {
+        \textbf{\large Véracité}\\[0.1cm]
+        Qualité, fiabilité\\
+        Nettoyage des données
+    };
+    
+    \node[highlightV] (V4) [below right of=BD, xshift=2cm, yshift=-1.5cm] {
+        \textcolor{bordergreen}{\textbf{\large Variété}}\\[0.1cm]
+        \textbf{CSV, JSON, SQL, RDF}\\
+        \textbf{Hétérogénéité structurelle}\\
+        \textbf{et sémantique}
+    };
+
+    % Flèches pointant vers le centre
+    \draw[-latex, thick, gray!80] (V1) -- (BD);
+    \draw[-latex, thick, gray!80] (V2) -- (BD);
+    \draw[-latex, thick, gray!80] (V3) -- (BD);
+    
+    % Flèche plus épaisse et verte pour la Variété
+    \draw[-latex, line width=2pt, bordergreen] (V4) -- (BD);
+
+    \end{tikzpicture}
+    
+    \vspace{0.5cm}
+    \caption{Les quatre dimensions du Big Data et la place centrale de la Variété dans la problématique d'intégration.}
+    \label{fig:4v_bigdata}
+\end{figure}
+
+\subsection{La Variété : source directe de l'hétérogénéité}
+Parmi ces quatre dimensions, la Variété est celle qui génère le plus directement les défis traités dans ce mémoire. Dans un environnement industriel réel, une même entité métier — un client, un produit, une transaction — peut être représentée simultanément dans une feuille de calcul Excel (avec une colonne nommée \texttt{ID\_Client}), dans une base de données relationnelle (avec un attribut \texttt{customer\_id}), et dans un fichier JSON d'export tiers (avec une clé \texttt{buyer}). Ces trois représentations réfèrent au même concept, mais aucun mécanisme automatique standard ne permet de les réconcilier sans intervention humaine ou sans infrastructure sémantique dédiée.
+
+\subsection{Scalabilité et besoins architecturaux}
+Dans un contexte Big Data, la scalabilité des processus de transformation est cruciale : un pipeline qui fonctionne correctement sur quelques milliers de lignes doit rester opérationnel sur des millions d'enregistrements provenant de dizaines de sources simultanées. La littérature consultée indique que les approches manuelles ou semi-automatiques d'intégration atteignent rapidement leurs limites dans ces scénarios, justifiant le recours à des pipelines automatisés, déclaratifs et évaluables quantitativement~\cite{wu2023comprehensive, yan2023enterprise}.
+
+% ─────────────────────────────────────────────────────────────
+\section{Introduction aux Knowledge Graphs}\label{sec:intro_kg}
+% ─────────────────────────────────────────────────────────────
+\subsection{Définition et fondements}
+Avant d'aborder les techniques spécialisées, il est utile de comprendre intuitivement ce qui distingue un Knowledge Graph d'une base de données classique. Dans une base relationnelle, les données sont organisées en tables dont les colonnes définissent des attributs. La \textit{sémantique} — c'est-à-dire le sens des données — reste implicite, dans la tête du développeur ou enfouie dans des commentaires de code. Un Knowledge Graph, au contraire, \textit{externalise} ce sens : chaque entité, chaque relation et chaque attribut reçoit un identifiant universel dont la définition est consultable et exploitable par une machine.
+
+Hogan et al.~\cite{hogan2021knowledge} proposent la définition de référence dans la littérature : un KG est un graphe orienté dans lequel les nœuds représentent des entités du monde réel et les arêtes des relations nommées entre ces entités, le tout formalisé selon les standards du Web Sémantique.
+
+\subsection{Le modèle RDF et le rôle des URIs}
+
+Le modèle de données fondamental des KGs est le triplet RDF
+(\textit{Sujet, Prédicat, Objet}).
+Chaque ressource est identifiée par une URI
+(Uniform Resource Identifier) universelle.
+
+\paragraph{Exemple concret d'unification sémantique.}
+Considérons deux fichiers sources provenant de systèmes distincts.
+Le premier contient une colonne \texttt{ID\_Client} ; le second,
+une colonne \texttt{Acheteur\_Num}. Dans un schéma relationnel,
+ces deux colonnes sont invisibles l'une à l'autre, chacune enfermée
+dans son silo applicatif. Dans un KG, elles sont toutes deux mappées
+vers la même URI ontologique :
+\begin{center}
+\texttt{<http://example.org/ontology\#Customer>}
+\end{center}
+Ce mécanisme d'identification universelle est précisément ce qui
+permet de surmonter l'hétérogénéité sémantique entre sources \cite{hogan2021knowledge}.
+
+\paragraph{Anatomie d'un triplet RDF.}
+Concrètement, chaque cellule d'un tableau source devient
+un \textbf{triplet RDF} de la forme (Sujet, Prédicat, Objet).
+Par exemple, la ligne \textit{ID\_Client = 42, Nom = Dupont,
+Email = dupont@mail.com} produit les trois triplets suivants :
+
+\begin{itemize}
+    \item \texttt{<Customer/42>} \quad
+          \texttt{rdf:type} \quad
+          \texttt{<ontology\#Customer>}
+    \item \texttt{<Customer/42>} \quad
+          \texttt{<ontology\#hasName>} \quad
+          \texttt{"Dupont"\^{}\^{}xsd:string}
+    \item \texttt{<Customer/42>} \quad
+          \texttt{<ontology\#hasEmail>} \quad
+          \texttt{"dupont@mail.com"\^{}\^{}xsd:string}
+\end{itemize}
+
+Le \textbf{Sujet} (\texttt{<Customer/42>}) est l'entité décrite,
+identifiée par une URI unique et stable.
+Le \textbf{Prédicat} (\texttt{<ontology\#hasName>}) est la propriété
+qui relie le sujet à sa valeur ; il est lui-même défini par une URI
+pointant vers l'ontologie du domaine.
+L'\textbf{Objet} peut être soit une autre URI (pour relier deux entités),
+soit un \textit{littéral} typé (une valeur concrète avec son type XSD :
+\texttt{xsd:string}, \texttt{xsd:date}, \texttt{xsd:decimal}, etc.).
+C'est précisément grâce à ce typage explicite que les hétérogénéités
+syntaxiques --- formats de dates, encodages de nombres, séparateurs
+décimaux --- sont résolues lors de la transformation.
+
+\paragraph{Graphes nommés et traçabilité de la provenance.}
+Une extension importante du modèle RDF est le \textbf{quadruplet}
+(Sujet, Prédicat, Objet, Graphe), qui ajoute un quatrième composant
+identifiant le \textit{graphe nommé} auquel appartient le triplet.
+Dans un pipeline multi-sources, cette extension permet de tracer
+l'origine de chaque triplet : un triplet provenant du fichier CRM
+et un triplet provenant de l'export RH sont stockés dans deux graphes
+nommés distincts, ce qui facilite l'audit de qualité et
+la résolution des conflits sémantiques.
+
+% \begin{figure}[ht]
+%     \centering
+%     % ── Description visuelle ──────────────────────────────────────────────────
+%     % Schéma en deux parties (gauche / droite) :
+%     %   Gauche : deux tables SQL (TABLE_A avec ID_Client, TABLE_B avec Acheteur_Num)
+%     %            reliées par une clé étrangère classique.
+%     %   Droite : un graphe RDF avec deux nœuds sources pointant tous deux vers
+%     %            le nœud URI <Customer>, lequel est relié à d'autres entités
+%     %            (<Order>, <Product>) par des arêtes étiquetées.
+%     % Une flèche horizontale centrale symbolise la « transformation sémantique ».
+%     % ─────────────────────────────────────────────────────────────────────────
+%     %
+%     % Code Mermaid correspondant :
+%     % graph LR
+%     %   subgraph SQL ["Schéma relationnel"]
+%     %     TA["TABLE_A\nID_Client"] -- FK --> TB["TABLE_B\nAcheteur_Num"]
+%     %   end
+%     %   subgraph KG ["Knowledge Graph RDF"]
+%     %     CU(<http://ex.org#Customer>) -- placeOrder --> OR(<http://ex.org#Order>)
+%     %     CU -- buys --> PR(<http://ex.org#Product>)
+%     %   end
+%     %   SQL -- "Transformation\nsémantique" --> KG
+%     %
+%     \fbox{\parbox{0.85\textwidth}{\centering\vspace{1.2cm}
+%     \textit{[Figure : Du schéma relationnel au graphe sémantique — insérer ici le diagramme.]}\\
+%     \vspace{1.2cm}}}
+%     \caption{Passage d'un schéma relationnel fragmenté vers un Knowledge Graph unifié par des URIs communes : illustration du principe d'unification sémantique.}
+%     \label{fig:sql_to_kg}
+% \end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[>=latex, scale=0.9, transform shape]
+        
+        % Définition des styles
+        \tikzset{
+            table/.style={draw=gray!80, thick, rounded corners, fill=gray!5, align=center, minimum width=3.2cm, minimum height=1.5cm},
+            uri/.style={draw=titleblue, very thick, circle, fill=titleblue!5, align=center, text width=2.5cm, minimum size=3cm, font=\small},
+            concept/.style={draw=titleblue, thick, rounded corners, fill=titleblue!5, align=center, minimum width=2.5cm, minimum height=1cm, font=\small},
+            mapping/.style={->, dashed, very thick, bordergreen},
+            relation/.style={->, very thick, titleblue}
+        }
+
+        % --- PARTIE GAUCHE : Schéma Relationnel ---
+        \node[table] (t1) at (0, 2) {\textbf{Table Marketing}\\[0.1cm] \texttt{ID\_Client}};
+        \node[table] (t2) at (0, -2) {\textbf{Table Facturation}\\[0.1cm] \texttt{Acheteur\_Num}};
+
+        % Cadre gris pour les silos
+        \draw[thick, gray, dashed, rounded corners] (-2.2, -3.5) rectangle (2.2, 3.5);
+        \node[gray, font=\bfseries] at (0, 3.1) {Silos Relationnels (Isolés)};
+
+        % --- PARTIE DROITE : Knowledge Graph ---
+        \node[uri] (customer) at (6.5, 0) {\textbf{URI Unique}\\[0.1cm] \texttt{<Customer>}};
+        \node[concept] (order) at (10.5, 2) {\texttt{<Order>}};
+        \node[concept] (product) at (10.5, -2) {\texttt{<Product>}};
+
+        % Cadre bleu pour le KG
+        \draw[thick, titleblue, dashed, rounded corners] (4.5, -3.5) rectangle (12.5, 3.5);
+        \node[titleblue, font=\bfseries] at (8.5, 3.1) {Knowledge Graph Unifié (RDF)};
+
+        % Relations au sein du KG (arêtes bleues)
+        \draw[relation] (customer) -- node[above, sloped, font=\scriptsize\ttfamily] {placeOrder} (order);
+        \draw[relation] (customer) -- node[below, sloped, font=\scriptsize\ttfamily] {buys} (product);
+
+        % --- CENTRE : Mapping Sémantique (Les flèches vertes) ---
+        \draw[mapping] (t1.east) -- node[above, sloped, text=bordergreen, font=\footnotesize\bfseries] {Unification} (customer.150);
+        \draw[mapping] (t2.east) -- node[below, sloped, text=bordergreen, font=\footnotesize\bfseries] {Unification} (customer.210);
+
+    \end{tikzpicture}
+    
+    \vspace{0.5cm}
+    \caption{Passage d'un schéma relationnel fragmenté vers un Knowledge Graph unifié par des URIs communes : illustration du principe d'unification sémantique.}
+    \label{fig:sql_to_kg}
+\end{figure}
+
+\subsection{Les composants du Web Sémantique}
+Au-delà du modèle RDF, l'écosystème du Web Sémantique propose une pile technologique complémentaire :
+\begin{itemize}
+    \item \textbf{RDFS} (\textit{RDF Schema}) permet de définir des hiérarchies de classes et de propriétés, ajoutant une première couche d'inférence.
+    \item \textbf{OWL} (\textit{Web Ontology Language}) fournit un langage expressif pour modéliser des contraintes logiques complexes et permettre un raisonnement automatique par inférence. Par exemple, une règle OWL peut déduire automatiquement que deux entités de sources différentes représentent le même individu réel.
+    \item \textbf{SPARQL} est le langage de requête standardisé pour interroger les graphes RDF de manière expressive, analogue au SQL pour les bases relationnelles.
+    \item \textbf{SHACL} (\textit{Shapes Constraint Language}) permet de définir et de vérifier des contraintes de validation sur la structure d'un graphe RDF, garantissant la conformité du graphe produit à l'ontologie cible.
+\end{itemize}
+Ce cadre formel constitue le fondement théorique du pipeline de transformation que nous proposons dans ce travail.
+
+% ─────────────────────────────────────────────────────────────
+\section{Construction Automatique et Intégration de Données Hétérogènes}\label{sec:construction_auto}
+% ─────────────────────────────────────────────────────────────
+\subsection{Formalisation du problème}
+La construction automatique de KGs à partir de sources hétérogènes est un défi central du domaine. Wu et al.~\cite{wu2023comprehensive} le formalisent à travers le théorème HACE (\textit{Heterogeneous, Autonomous, Complex, Evolving}), qui caractérise les quatre dimensions problématiques des environnements Big Data. Leur survey de référence, publié dans \textit{ACM Computing Surveys}, recense les méthodes d'extraction d'entités nommées (NER), d'extraction de relations et de fusion de connaissances, et souligne que chaque étape du pipeline introduit des erreurs cumulatives susceptibles de dégrader la qualité du graphe final. Cette observation sur l'\textit{accumulation d'erreurs} constitue l'une des motivations majeures pour développer des pipelines intégrés plutôt que séquentiels.
+
+\subsection{Pipelines d'entreprise}
+Dans un contexte industriel, Yan et al.~\cite{yan2023enterprise} proposent un cadre de processus complet pour la construction d'un KG combinant données structurées et non structurées. Leur pipeline couvre l'acquisition, le prétraitement, l'extraction d'information, la fusion et la mise à jour du KG. Les auteurs démontrent que la qualité du KG produit est directement liée à la rigueur du traitement de l'hétérogénéité en amont. Cette approche constitue un point de comparaison direct pour notre travail, bien qu'elle demeure partiellement manuelle dans sa phase d'alignement de schémas — limitation que notre approche vise précisément à dépasser.
+
+Il convient de souligner une limitation méthodologique récurrente dans ce type de travaux : les pipelines proposés sont souvent décrits à un niveau d'abstraction élevé, sans environnement d'exécution normalisé ni mécanisme de validation formelle du graphe produit, ce qui nuit considérablement à leur reproductibilité~\cite{wu2023comprehensive}.
+
+\subsection{Taxonomie de l'hétérogénéité}
+La littérature consultée converge vers une taxonomie tripartite bien documentée des formes d'hétérogénéité~\cite{survey_heterogeneous_kg_2023} :
+\begin{enumerate}
+    \item \textbf{Hétérogénéité structurelle} : différences dans l'organisation des données entre sources (tables normalisées vs. fichiers plats, hiérarchies JSON vs. schémas relationnels).
+    \item \textbf{Hétérogénéité syntaxique} : mêmes valeurs encodées différemment selon les systèmes (formats de dates, encodages de caractères, unités de mesure).
+    \item \textbf{Hétérogénéité sémantique} : mêmes concepts désignés par des termes différents selon les domaines ou les organisations (\texttt{ID\_Client} vs. \texttt{Acheteur\_Num} vs. \texttt{buyer\_id}).
+\end{enumerate}
+Cette classification est désormais le cadre de référence standard pour décrire les défis d'intégration dans les pipelines de transformation vers KG, et structure directement l'architecture en couches que nous proposons.
+
+Le tableau~\ref{tab:heterogeneite} illustre cette taxonomie
+avec des exemples concrets typiques d'un environnement
+multi-sources industriel, directement représentatifs
+des défis adressés dans ce travail.
+
+\begin{table}[H]
+\centering
+\caption{Taxonomie des formes d'hétérogénéité
+         avec exemples concrets.}
+\label{tab:heterogeneite}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{3.2cm}|p{5cm}|p{5cm}|}
+\hline
+\textbf{Type d'hétérogénéité}
+    & \textbf{Description}
+    & \textbf{Exemple concret} \\
+\hline
+\textbf{Structurelle}
+    & Différences dans l'organisation
+      des données entre sources
+    & Table normalisée (3NF) côté CRM
+      vs. fichier CSV dénormalisé
+      côté export comptable \\
+\hline
+\textbf{Syntaxique}
+    & Mêmes valeurs encodées
+      différemment selon les systèmes
+    & Date de commande :
+      \texttt{15/03/2024} (CSV France)
+      vs. \texttt{2024-03-15} (ISO 8601)
+      vs. \texttt{Mar 15, 2024} (export US) \\
+\hline
+\textbf{Sémantique}
+    & Mêmes concepts désignés
+      par des termes différents
+    & \texttt{ID\_Client} (CRM)
+      vs. \texttt{Acheteur\_Num} (facturation)
+      vs. \texttt{buyer\_id} (API tierce) \\
+\hline
+\end{tabular}
+\end{table}
+
+Cette taxonomie structure directement les trois modules
+de traitement de notre pipeline :
+le module d'ingestion adresse l'hétérogénéité \textbf{structurelle},
+le moteur de triplification avec fonctions de transformation
+adresse l'hétérogénéité \textbf{syntaxique}, et le module
+de schema matching hybride adresse l'hétérogénéité \textbf{sémantique}.
+
+\subsection{Intégration multi-sources et approches récentes}
+Branco et al.~\cite{branco2025integration} publient une synthèse transversale qui couple explicitement les mécanismes d'intégration — schema matching, résolution d'entités et enrichissement sémantique — avec les modèles de stockage et d'accès (entrepôts en colonnes, NoSQL, lakehouses et fédération). Ils introduisent des workflows de résolution reproductibles pour les problèmes canoniques d'hétérogénéité, notamment l'inadéquation des noms de schéma et l'ambiguïté des formats de dates. D'après cette synthèse, qui couvre les travaux publiés entre 2024 et 2025, les approches d'intégration assistées par IA — dont le schema matching par LLMs — constituent la frontière de recherche la plus active, tout en soulignant l'absence d'implémentations unifiées et entièrement automatisées.
+
+Une approche complémentaire est proposée dans~\cite{semantic_integration_heterogeneous_2021}, qui traite l'intégration de sources hétérogènes — notamment les tableurs — en extrayant automatiquement une ontologie reflétant la structure interne de la source. Si cette approche est prometteuse pour les sources isolées, elle ne traite pas le problème de l'alignement entre plusieurs sources simultanées, ce qui constitue précisément la valeur ajoutée centrale de notre contribution.
+
+% ─────────────────────────────────────────────────────────────
+\section{Transformation de Données Tabulaires vers RDF}\label{sec:tabulaire_rdf}
+% ─────────────────────────────────────────────────────────────
+\subsection{Les standards W3C : R2RML et RML}
+
+La transformation de données tabulaires en triplets RDF ---
+aussi appelée \textit{triplification} ou \textit{lifting} ---
+fait l'objet d'une recherche active depuis la publication du
+standard R2RML par le W3C. Ce standard définit un langage déclaratif
+pour exprimer des règles de mapping entre des tables relationnelles
+et des graphes RDF.
+
+\paragraph{Structure d'une règle de mapping R2RML.}
+Un fichier R2RML est composé d'un ensemble de \textbf{Triples Maps},
+chacune décrivant comment transformer une table source (ou une
+requête SQL) en un ensemble de triplets RDF.
+Chaque Triples Map est constituée de trois composants :
+\begin{itemize}
+    \item La \textbf{Logical Table} : la source de données
+          (table SQL ou requête).
+    \item Le \textbf{Subject Map} : la règle de construction de
+          l'URI du sujet (généralement basée sur la clé primaire).
+    \item Les \textbf{Predicate-Object Maps} : l'ensemble des
+          correspondances (prédicat ontologique $\leftarrow$
+          colonne source), chacune associée à un type XSD
+          pour les valeurs littérales.
+\end{itemize}
+
+\paragraph{Extension vers RML.}
+Dimou et al.~\cite{dimou2014rml} ont étendu ce standard avec
+RML (\textit{RDF Mapping Language}), un langage déclaratif capable
+de traiter non seulement les bases de données relationnelles, mais
+aussi les fichiers CSV, JSON, XML et Excel.
+La différence fondamentale entre R2RML et RML réside dans la notion
+de \textbf{Logical Source} : là où R2RML n'accepte que des tables SQL,
+RML généralise cette notion à toute source itérable, en spécifiant
+un \textit{itérateur} (par exemple, chaque ligne d'un CSV ou chaque
+nœud d'un fichier JSON).
+Cette généralisation est déterminante pour notre contexte :
+elle permet à un même moteur de traiter simultanément des sources
+de formats hétérogènes sans modifier l'architecture du pipeline.
+RML est aujourd'hui le standard de facto pour les projets
+multi-sources, avec plus de 500 citations dans la littérature
+scientifique au moment de la rédaction de ce travail.
+
+\paragraph{Exemple de mapping RML simplifié.}
+À titre illustratif, la règle suivante exprime en syntaxe YARRRML
+(surcouche lisible de RML) le mapping d'un fichier CSV contenant
+des données clients vers l'ontologie cible :
+\begin{verbatim}
+mappings:
+clients:
+    sources: [['clients.csv~csv']]
+    s: http://example.org/Customer/$(ID_Client)
+    po:
+        - [rdf:type, ontology:Customer]
+        - [ontology:hasName, $(Nom), xsd:string]
+        - [ontology:hasEmail, $(Email), xsd:string]
+\end{verbatim}
+
+Chaque ligne \texttt{po} (Predicate-Object) fait correspondre
+une colonne du CSV (\texttt{\$(Nom)}) à une propriété ontologique
+(\texttt{ontology:hasName}), avec typage XSD explicite.
+Ce mécanisme déclaratif est au cœur de notre contribution :
+la génération automatique de telles règles par un agent LLM
+constitue la valeur ajoutée principale de notre pipeline.
+
+% \begin{figure}[ht]
+%     \centering
+%     % ── Description visuelle ──────────────────────────────────────────────────
+%     % Diagramme de pipeline vertical en cinq étapes :
+%     %   1. Sources (icônes CSV / Excel / JSON / RDB)
+%     %   2. Règles de mapping (fichier .rml.ttl)
+%     %   3. Moteur Morph-KGC
+%     %   4. Triplets RDF générés (fichier .nt ou .ttl)
+%     %   5. Validation SHACL
+%     % Les flèches entre étapes sont annotées avec le type de transformation.
+%     % ─────────────────────────────────────────────────────────────────────────
+%     \fbox{\parbox{0.85\textwidth}{\centering\vspace{1.2cm}
+%     \textit{[Figure : Pipeline de triplification RML/Morph-KGC — insérer ici le diagramme.]}\\
+%     \vspace{1.2cm}}}
+%     \caption{Pipeline de transformation de sources tabulaires hétérogènes vers des triplets RDF via le moteur Morph-KGC et le standard RML.}
+%     \label{fig:pipeline_rml}
+% \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=latex, scale=0.85, transform shape]
+        
+        % Définition des styles
+        \tikzset{
+            source/.style={draw=gray!80, thick, rounded corners, fill=gray!5, align=center, minimum width=3.5cm, minimum height=1.5cm},
+            rule/.style={draw=bordergreen, thick, rounded corners, fill=bordergreen!5, align=center, minimum width=3.5cm, minimum height=1.5cm},
+            engine/.style={draw=titleblue, very thick, rounded corners, fill=titleblue!10, align=center, minimum width=3.5cm, minimum height=2.5cm},
+            output/.style={draw=titleblue, thick, rounded corners, fill=titleblue!5, align=center, minimum width=3.2cm, minimum height=1.5cm},
+            valid/.style={draw=bordergreen, thick, rounded corners, fill=bordergreen!5, align=center, minimum width=2.8cm, minimum height=1.5cm},
+            arrow/.style={->, thick, draw=gray!80},
+            mainarrow/.style={->, very thick, draw=titleblue}
+        }
+
+        % --- ENTRÉES (Gauche) ---
+        \node[source] (src) at (0, 2) {\textbf{Sources Hétérogènes}\\[0.1cm] \texttt{CSV, Excel, RDB}};
+        \node[rule] (map) at (0, -2) {\textbf{Règles de Mapping}\\[0.1cm] \texttt{YARRRML / RML}};
+
+        % --- MOTEUR (Centre) ---
+        \node[engine] (morph) at (5.5, 0) {\Large \textbf{Morph-KGC}\\[0.2cm] \normalsize \textit{Moteur de}\\[0.1cm]\textit{Triplification}};
+
+        % --- SORTIE & VALIDATION (Droite) ---
+        \node[output] (rdf) at (11, 0) {\textbf{Knowledge Graph}\\[0.1cm] \texttt{Triplets RDF (.nt)}};
+        \node[valid] (shacl) at (15.5, 0) {\textbf{Validation}\\[0.1cm] \texttt{SHACL}};
+
+        % --- CONNEXIONS ---
+        % Entrées vers le moteur
+        \draw[arrow] (src.east) -- node[above, sloped, font=\footnotesize] {Ingestion des données} (morph.150);
+        \draw[arrow] (map.east) -- node[below, sloped, font=\footnotesize] {Directives de conversion} (morph.210);
+
+        % Moteur vers RDF
+        \draw[mainarrow] (morph.east) -- node[above, font=\footnotesize\bfseries] {Génération} (rdf.west);
+
+        % RDF vers Validation
+        \draw[->, very thick, draw=bordergreen] (rdf.east) -- node[above, font=\footnotesize\bfseries, text=bordergreen] {Conformité} (shacl.west);
+
+        % --- CADRE POINTILLÉ POUR LE PROCESSUS GLOBAL ---
+        \draw[thick, gray, dashed, rounded corners] (3.5, -3.5) rectangle (17.5, 3.5);
+        \node[gray, font=\bfseries] at (10.5, 3.1) {Pipeline Automatisé de Triplification et Validation};
+
+    \end{tikzpicture}
+    
+    \vspace{0.5cm}
+    \caption{Pipeline de transformation de sources tabulaires hétérogènes vers des triplets RDF via le moteur Morph-KGC et le standard RML.}
+    \label{fig:pipeline_rml}
+\end{figure}
+
+\subsection{Morph-KGC et les vues RML}
+Le moteur Morph-KGC, développé en Python par Arenas-Guerrero et al.~\cite{arenas2023morphkgc}, étend RML avec des fonctions définies par l'utilisateur, permettant des transformations syntaxiques complexes lors de la génération des triplets. L'article introduit également le concept de \textit{vues RML}, analogue aux vues SQL, qui permettent de modulariser les règles de transformation pour des sources complexes. Cette modularité est particulièrement précieuse dans un contexte multi-sources, car elle permet de maintenir et de réutiliser des blocs de mapping indépendamment.
+
+\subsection{YARRRML et les approches déclaratives}
+Warren et al.~\cite{warren2024yarrrml} conduisent une étude empirique comparative entre deux paradigmes : l'approche déclarative basée sur des chemins (YARRRML) et l'approche de triplification directe (SPARQL Anything). Leurs résultats désignent YARRRML comme l'approche offrant la meilleure utilisabilité, notamment grâce à sa syntaxe YAML lisible par des non-experts, ce qui justifie son adoption dans le pipeline que nous proposons. YARRRML peut être considéré comme une couche d'abstraction au-dessus de RML, simplifiant l'écriture des règles de mapping sans sacrifier leur expressivité.
+
+\subsection{SemTab : le banc d'essai communautaire}
+La série de challenges SemTab~\cite{semtab2024, semtab2023}, organisée en marge de la conférence ISWC, constitue le banc d'essai communautaire de référence pour l'évaluation des systèmes de transformation de tables vers KGs. Elle évalue trois tâches principales : l'annotation de types de colonnes (CTA), l'annotation d'entités de cellules (CEA) et l'annotation de propriétés de colonnes (CPA). L'édition 2024 a introduit une piste dédiée à l'évaluation des LLMs face aux systèmes STI (\textit{Semantic Table Interpretation}) traditionnels, validant ainsi la pertinence des approches hybrides symbolique/neuronal. Ces challenges constituent le cadre d'évaluation que nous mobilisons pour comparer notre pipeline aux approches existantes.
+
+% ─────────────────────────────────────────────────────────────
+\section{Schema Matching et Ontology Alignment}\label{sec:schema_matching}
+% ─────────────────────────────────────────────────────────────
+\subsection{Définition et enjeux}
+Le \textit{schema matching} — tâche consistant à identifier des correspondances sémantiques entre éléments de schémas sources et cibles — est une pierre angulaire des pipelines d'intégration. Dans le contexte de la génération de KGs, il correspond à la question : « quelle colonne de quelle table source doit être mappée vers quelle propriété de l'ontologie cible ? ». Sans un schema matching fiable, les triplets RDF générés seront sémantiquement incorrects, quelle que soit la qualité du moteur de triplification utilisé en aval.
+
+\subsection{Évolution des approches}
+La revue fondatrice de Rahm et Bernstein établit une taxonomie des approches en deux grandes familles : les méthodes \textbf{linguistiques} (basées sur les libellés des attributs) et les méthodes \textbf{structurelles} (basées sur les contraintes et les relations entre attributs). Pendant deux décennies, ces approches ont constitué l'état de l'art, mais souffrent d'un plafond de performance structurel face à l'hétérogénéité sémantique : deux colonnes peuvent être sémantiquement équivalentes sans partager \textit{aucun} token commun dans leur libellé (\texttt{ID\_Client} et \texttt{buyer} en sont un exemple trivial). Cette limite constitue la motivation principale du recours aux approches basées sur les embeddings et les LLMs.
+
+% \begin{figure}[ht]
+%     \centering
+%     % ── Description visuelle ──────────────────────────────────────────────────
+%     % Frise chronologique horizontale en quatre phases :
+%     %   1990s-2000s : Approches linguistiques (Levenshtein, TF-IDF)
+%     %   2000s-2010s : Approches structurelles (graphes de contraintes)
+%     %   2018-2022  : Embeddings (BERT, Sentence-BERT)
+%     %   2022-2025  : LLMs (GPT, LLaMA, approches hybrides)
+%     % Chaque phase est annotée avec ses avantages (+) et limites (-).
+%     % ─────────────────────────────────────────────────────────────────────────
+%     \fbox{\parbox{0.85\textwidth}{\centering\vspace{1.2cm}
+%     \textit{[Figure : Évolution des approches de schema matching — insérer ici la frise.]}\\
+%     \vspace{1.2cm}}}
+%     \caption{Évolution des approches de schema matching : des méthodes linguistiques aux Large Language Models.}
+%     \label{fig:evolution_schema_matching}
+% \end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[>=latex, scale=0.85, transform shape]
+        
+        % --- Définition des styles ---
+        \tikzset{
+            timeline/.style={->, line width=3pt, titleblue},
+            yearnode/.style={circle, fill=titleblue, text=white, font=\small\bfseries, inner sep=4pt, minimum size=1cm},
+            % Styles des boîtes selon l'époque
+            boxold/.style={draw=gray!80, thick, rounded corners, fill=gray!5, align=center, text width=3.8cm, font=\footnotesize},
+            boxmid/.style={draw=titleblue, thick, rounded corners, fill=titleblue!5, align=center, text width=3.8cm, font=\footnotesize},
+            boxnew/.style={draw=bordergreen, thick, rounded corners, fill=bordergreen!5, align=center, text width=3.8cm, font=\footnotesize},
+            % Styles pour les avantages/inconvénients
+            plus/.style={text=bordergreen, font=\scriptsize\bfseries},
+            minus/.style={text=red!80, font=\scriptsize\bfseries}
+        }
+
+        % --- Ligne du temps centrale ---
+        \draw[timeline] (-1,0) -- (16.5,0);
+
+        % --- Nœuds des années ---
+        \node[yearnode] (y1) at (1.5,0) {1990s};
+        \node[yearnode] (y2) at (6,0) {2000s};
+        \node[yearnode] (y3) at (10.5,0) {2018};
+        \node[yearnode] (y4) at (15,0) {2022+};
+
+        % --- Phase 1 : Linguistique (En haut) ---
+        \node[boxold] (b1) at (1.5, 3) {
+            \textbf{Approches Linguistiques}\\[0.1cm] 
+            \textit{Levenshtein, TF-IDF}\\[0.2cm] 
+            \textcolor{bordergreen}{(+) Simples et rapides} \\ 
+            \textcolor{red!80}{(-) Bloquées par la synonymie}
+        };
+        \draw[thick, gray, dashed] (y1) -- (b1);
+
+        % --- Phase 2 : Structurelle (En bas) ---
+        \node[boxold] (b2) at (6, -3) {
+            \textbf{Approches Structurelles}\\[0.1cm] 
+            \textit{Graphes, Contraintes, Types}\\[0.2cm] 
+            \textcolor{bordergreen}{(+) Utilisent la topologie} \\ 
+            \textcolor{red!80}{(-) Rigides face à l'hétérogénéité}
+        };
+        \draw[thick, gray, dashed] (y2) -- (b2);
+
+        % --- Phase 3 : Embeddings (En haut) ---
+        \node[boxmid] (b3) at (10.5, 3) {
+            \textbf{Embeddings Contextuels}\\[0.1cm] 
+            \textit{BERT, Sentence-BERT}\\[0.2cm] 
+            \textcolor{bordergreen}{(+) Identifient la sémantique} \\ 
+            \textcolor{red!80}{(-) Perte du contexte global}
+        };
+        \draw[thick, titleblue, dashed] (y3) -- (b3);
+
+        % --- Phase 4 : LLMs (En bas) ---
+        \node[boxnew] (b4) at (15, -3) {
+            \textbf{Large Language Models}\\[0.1cm] 
+            \textit{GPT, LLaMA, Hybrides}\\[0.2cm] 
+            \textcolor{bordergreen}{(+) Compréhension profonde} \\ 
+            \textcolor{red!80}{(-) Coût et "hallucinations"}
+        };
+        \draw[thick, bordergreen, dashed] (y4) -- (b4);
+
+    \end{tikzpicture}
+    
+    \vspace{0.5cm}
+    \caption{Évolution des approches de schema matching : des méthodes linguistiques aux Large Language Models.}
+    \label{fig:evolution_schema_matching}
+\end{figure}
+
+\subsection{La rupture paradigmatique des embeddings}
+L'introduction des modèles d'embeddings contextuels (BERT, Sentence-BERT) a constitué une rupture paradigmatique dans le domaine du schema matching, permettant d'identifier des correspondances même entre termes orthographiquement distincts. En projetant les libellés des attributs dans un espace vectoriel dense où la proximité géométrique reflète la similarité sémantique, ces modèles dépassent les limites des approches purement lexicales. Cette évolution motive l'adoption d'une approche SBERT multilingue dans le module de schema matching de notre pipeline, afin de traiter des sources potentiellement rédigées dans plusieurs langues.
+
+\subsection{L'Ontology Alignment Evaluation Initiative (OAEI)}
+L'OAEI~\cite{oaei2024} évalue annuellement les systèmes d'alignement d'ontologies OWL sur des benchmarks standardisés. Ses résultats soulignent régulièrement que les approches mono-sources dominent la littérature, sans mécanisme natif de fusion multi-sources cohérente — limitation directement adressée par notre travail.
+
+Sur le plan de l'automatisation, une étude empirique récente~\cite{uncertainty_ontology_matching_2024} expérimente des outils pré-LLM de matching d'ontologies sur des données relationnelles réelles non enrichies sémantiquement. Les auteurs concluent que ces outils atteignent rapidement leurs limites dès que les libellés des attributs sources et cibles sont trop dissemblables, ce qui motive le recours aux LLMs dans les approches plus récentes.
+
+% ─────────────────────────────────────────────────────────────
+\section{L'Apport des Large Language Models}\label{sec:llms}
+% ─────────────────────────────────────────────────────────────
+\subsection{Panorama général}
+L'avènement des Large Language Models (LLMs) a profondément transformé le champ de la construction de KGs depuis 2022. Pan et al.~\cite{pan2024llm_kg} proposent une synthèse complète des capacités des LLMs pour la construction et le raisonnement sur les KGs, montrant que ces modèles passent progressivement d'outils d'analyse passifs à des agents actifs de génération de connaissances structurées. Le survey de 2025~\cite{llm_kg_survey_2025} documente notamment l'approche LKD-KGC, qui extrait et fusionne automatiquement des types d'entités équivalents via le clustering vectoriel et la déduplication assistée par LLM, sans supervision humaine explicite.
+
+\subsection{LLMatch : schema matching par LLMs}
+
+Dans le domaine du schema matching, LLMatch~\cite{llmatch2025}
+propose un cadre unifié exploitant les LLMs qui opère en deux phases
+complémentaires.
+La première phase, dite d'\textbf{agrégation}, consolide les colonnes
+sémantiquement liées en concepts d'ordre supérieur grâce à un LLM
+(GPT-4 dans les expériences rapportées).
+La seconde phase, dite de \textbf{décomposition}, raffine ces
+correspondances au niveau colonne-à-colonne pour produire un mapping
+précis.
+
+\paragraph{Protocole expérimental et benchmark SchemaNet.}
+Les auteurs introduisent \textbf{SchemaNet}, un benchmark original
+dérivé de paires de schémas réels issus de trois domaines métier :
+\textit{e-commerce}, \textit{santé} et \textit{finance}.
+Ce benchmark est conçu pour capturer les cas de correspondance
+\textit{cross-domain} difficiles, c'est-à-dire les cas où deux
+colonnes sont sémantiquement équivalentes mais ne partagent aucun
+token lexical (par exemple, \texttt{purchase\_amount}
+côté e-commerce et \texttt{transaction\_value}
+côté finance).
+
+Le protocole compare LLMatch à plusieurs baselines représentatives :
+\begin{itemize}
+    \item \textbf{Jaccard sur tokens} et \textbf{TF-IDF} :
+          méthodes linguistiques classiques de la première génération.
+    \item \textbf{SBERT} (\textit{paraphrase-multilingual-MiniLM-L12-v2}) :
+          approche par embeddings contextuels.
+    \item \textbf{Système de règles expertes} :
+          heuristiques basées sur les types de données et les
+          contraintes de domaine.
+\end{itemize}
+
+\paragraph{Résultats et analyse.}
+Sur les cas de correspondance \textit{cross-domain}
+de SchemaNet, LLMatch obtient un \textbf{F1-score
+supérieur} aux baselines linguistiques (Jaccard, TF-IDF),
+qui échouent systématiquement en l'absence de similarité lexicale.
+Par rapport à SBERT, LLMatch améliore encore la précision
+sur les cas les plus ambigus, au prix d'un coût d'appel API
+nettement supérieur (facteur 10 à 30 selon les benchmarks reportés).
+Ces résultats motivent directement l'architecture hybride
+que nous adoptons dans notre pipeline : le module SBERT traite
+les correspondances à haute similarité lexicale (cas simples et
+peu coûteux), tandis que le LLM n'est sollicité que pour les
+cas ambigus, ce qui permet de contenir le coût computationnel
+global tout en préservant la précision du matching sémantique.
+
+\paragraph{Limite principale.}
+La limite principale identifiée par les auteurs est
+le \textbf{coût des appels API} (GPT-4 en mode inférence),
+qui rend LLMatch difficile à déployer à grande échelle
+sur des pipelines traitant des milliers de paires
+de colonnes simultanément.
+Cette limite constitue l'une des motivations de l'architecture
+hybride symbolique/LLM que nous proposons dans ce travail.
+
+\subsection{SCHEMORA : alignement par prompt engineering}
+SCHEMORA~\cite{schemora2025} explore une approche par \textit{prompt engineering}, sans fine-tuning, pour l'alignement sémantique robuste de schémas hétérogènes. L'avantage principal de cette approche est son faible coût d'adaptation à de nouveaux domaines : il suffit de reformuler le prompt sans réentraîner le modèle. Les auteurs évaluent leur approche sur plusieurs benchmarks publics et concluent qu'un LLM correctement \textit{prompté} peut rivaliser avec des systèmes fine-tunés, tout en conservant une flexibilité domaine-agnostique. La limite principale identifiée est la variabilité des sorties selon la formulation exacte du prompt, ce qui nécessite un mécanisme de validation complémentaire.
+
+\subsection{iText2KG : construction incrémentale de KGs}
+iText2KG~\cite{itext2kg2024} représente une approche incrémentale de construction de KGs pilotée par LLMs, capable de gérer les conflits lors de la fusion de sous-graphes générés depuis différentes sources. Bien que centré sur les textes non structurés, son paradigme de \textit{fusion incrémentale} est transposable au contexte tabulaire multi-sources : chaque source génère un sous-graphe local, et un mécanisme de réconciliation basé sur un LLM permet de fusionner ces sous-graphes en résolvant les conflits sémantiques (entités dupliquées, propriétés contradictoires). Les expériences reportées sur des benchmarks standards de NLP montrent que l'approche incrémentale préserve la cohérence du graphe mieux que les approches batch, au prix d'un surcoût computationnel non négligeable.
+
+\begin{figure}[ht]
+    \centering
+    % ── Description visuelle ──────────────────────────────────────────────────
+    % Tableau comparatif sous forme de matrice :
+    %   Lignes : LLMatch, SCHEMORA, iText2KG
+    %   Colonnes : Tâche principale, Dataset d'évaluation, Métrique principale,
+    %              Score reporté, Limite identifiée
+    % Chaque cellule est courte (max 2-3 mots) pour maintenir la lisibilité.
+    % ─────────────────────────────────────────────────────────────────────────
+    \begin{center}
+    \begin{tabular}{|p{2.5cm}|p{3cm}|p{2.5cm}|p{2cm}|p{3.5cm}|}
+    \hline
+    \textbf{Framework} & \textbf{Tâche} & \textbf{Dataset} & \textbf{Métrique} & \textbf{Limite} \\
+    \hline
+    LLMatch~\cite{llmatch2025} & Schema matching multi-domaine & SchemaNet & F1-score & Coût API élevé \\
+    \hline
+    SCHEMORA~\cite{schemora2025} \hspace{2cm} & Alignement sémantique & Benchmarks OAEI & Precision / Recall  & Variabilité des prompts \\
+    \hline
+    iText2KG~\cite{itext2kg2024} & Construction KG incrémentale & Benchmarks NLP & Cohérence du graphe & Sources textuelles (non tabulaires) \\
+    \hline
+    \end{tabular}
+    \end{center}
+    \caption{Comparaison des frameworks LLM pour la construction de KGs : protocoles, datasets et métriques.}
+    \label{tab:comparaison_llm}
+\end{figure}
+
+\subsection{Limites communes aux approches LLM}
+La limite commune à ces approches réside dans leur coût computationnel — appels API ou infrastructure GPU significative — et dans la variabilité de leurs sorties, qui nécessitent une validation par \textit{gold standard} pour être fiables dans un contexte de production. Ces considérations motivent l'adoption d'une architecture hybride dans notre pipeline, combinant un module symbolique déterministe pour les cas de correspondance simples et un LLM pour les cas ambigus uniquement.
+
+% ─────────────────────────────────────────────────────────────
+\section{Défis et Limites des Approches Existantes}\label{sec:defis}
+% ─────────────────────────────────────────────────────────────
+L'analyse comparative des travaux présentés dans les sections précédentes met en évidence plusieurs limitations structurelles récurrentes.
+
+\textbf{Fragmentation des pipelines.} La majorité des pipelines existants traitent l'hétérogénéité de façon séquentielle et non intégrée : le schema matching, la résolution d'entités et la triplification sont abordés comme des problèmes indépendants, sans propagation des informations de confiance entre les étapes. Cette fragmentation entraîne une accumulation d'erreurs difficile à diagnostiquer et à corriger~\cite{wu2023comprehensive}.
+
+\textbf{Absence d'évaluation standardisée de bout en bout.} Les évaluations quantitatives restent rares et peu standardisées au niveau du pipeline global. Si SemTab~\cite{semtab2024, semtab2023} fournit un cadre d'évaluation communautaire pour la tâche d'annotation sémantique, la littérature consultée ne présente que très peu de travaux qui évaluent l'ensemble du pipeline de bout en bout avec des métriques cohérentes de précision, rappel et F1 par module. Wu et al.~\cite{wu2023comprehensive} soulignent que cette absence d'évaluation rigoureuse constitue l'un des principaux freins à la comparaison des approches.
+
+\textbf{Reproductibilité insuffisante.} Les implémentations proposées dans la littérature sont souvent dépendantes d'environnements logiciels non documentés, de données propriétaires non publiables ou d'APIs tierces susceptibles d'évoluer. Cela limite considérablement la possibilité de valider ou d'étendre les résultats publiés, et constitue un obstacle à l'adoption industrielle des approches de recherche.
+
+\textbf{Scalabilité non évaluée.}
+Un quatrième défi, particulièrement critique dans
+le contexte de ce travail, est celui de la \textbf{scalabilité}.
+La majorité des travaux cités dans ce chapitre évaluent
+leurs pipelines sur des jeux de données de taille modeste
+(quelques dizaines à quelques centaines de tables sources),
+sans analyser le comportement du système lorsque
+le volume et le nombre de sources augmentent significativement.
+Or, dans un contexte Big Data --- où un pipeline peut être
+amené à traiter simultanément des dizaines de millions de
+triplets générés depuis des centaines de sources hétérogènes
+--- la scalabilité est une exigence non négociable.
+Cette lacune est d'autant plus préoccupante que certaines
+approches LLM, comme LLMatch~\cite{llmatch2025},
+impliquent un nombre d'appels API proportionnel au produit
+du nombre de colonnes sources par le nombre de propriétés
+cibles, ce qui peut rapidement devenir prohibitif.
+Notre pipeline adresse partiellement cette contrainte
+en adoptant une architecture hybride qui limite les appels
+LLM aux cas ambigus, et en s'appuyant sur des moteurs
+de triplification optimisés (Morph-KGC) capables
+de traiter de grands volumes en mode batch.
+
+% ─────────────────────────────────────────────────────────────
+\section{Positionnement de notre Travail}\label{sec:positionnement}
+% ─────────────────────────────────────────────────────────────
+L'analyse de la littérature présentée dans ce chapitre révèle un ensemble de lacunes convergentes. La littérature consultée ne met pas en évidence de pipeline unifié, reproductible et entièrement automatisé qui intègre dans un seul flux cohérent les cinq étapes suivantes : ingestion multi-format, schema matching hybride (symbolique + sémantique + LLM), résolution d'entités, triplification déclarative et validation formelle par contraintes SHACL, tout en étant évaluable quantitativement sur chaque module.
+
+Pour préciser ce positionnement, le tableau~\ref{tab:positionnement} synthétise les contributions des travaux les plus proches et les lacunes que notre approche adresse.
+
+\begin{table}[ht]
+\centering
+
+\label{tab:positionnement}
+\begin{tabular}{|p{3cm}|p{3.5cm}|p{3.5cm}|p{3cm}|}
+\hline
+\textbf{Travail} & \textbf{Contribution} & \textbf{Lacune} & \textbf{Notre réponse} \\
+\hline
+Yan et al.~\cite{yan2023enterprise} & Pipeline KG complet & Alignement partiellement manuel & Génération auto. de règles YARRRML par LLM \\
+\hline
+LLMatch~\cite{llmatch2025}, SCHEMORA~\cite{schemora2025} & Schema matching LLM & Isolation du matching (pas de triplification) & Intégration dans un pipeline unifié \\
+\hline
+Morph-KGC~\cite{arenas2023morphkgc} & Triplification RML & Suppose un mapping déjà établi & Génération automatique du mapping \\
+\hline
+SemTab~\cite{semtab2024} & Évaluation STI & Pas de pipeline de production & Évaluation par gold standard annoté \\
+\hline
+\end{tabular}
+\caption{Positionnement de notre travail par rapport aux contributions existantes.}
+\end{table}
+
+Notre travail s'inscrit à l'intersection de ces contributions, en proposant un pipeline qui traite simultanément plusieurs sources tabulaires hétérogènes, automatise la génération des règles YARRRML par un agent LLM (LangChain), intègre nativement la résolution d'entités avec génération de triplets \texttt{owl:sameAs}, valide le graphe produit par des contraintes SHACL, et est entièrement conteneurisé et reproductible via Docker Compose, avec évaluation quantitative par gold standard annoté.
+
+Il convient de souligner avec prudence que ce positionnement est fondé sur la littérature accessible et consultée lors de la rédaction de ce travail ; d'éventuelles contributions très récentes ou non indexées pourraient ne pas y figurer.
+
+% ─────────────────────────────────────────────────────────────
+\section{Conclusion}\label{sec:conclusion_etat_art}
+% ─────────────────────────────────────────────────────────────
+Ce chapitre a dressé un panorama structuré des approches existantes pour la transformation de données tabulaires hétérogènes en Knowledge Graphs. Nous avons montré que le paradigme Big Data, et en particulier la dimension « Variété », génère des défis d'intégration que les approches relationnelles classiques ne permettent pas de résoudre de façon automatisée et scalable.
+
+Les fondements des Knowledge Graphs — modèle RDF, URIs, OWL, SPARQL, SHACL — offrent un cadre formel pour surmonter cette hétérogénéité, à condition de disposer de pipelines de transformation robustes. L'analyse de la littérature a permis d'identifier quatre lacunes convergentes : la fragmentation des pipelines existants, l'absence d'évaluation standardisée de bout en bout, la reproductibilité insuffisante, et le déficit d'études sur la scalabilité.
+
+Les LLMs représentent une avancée significative pour les tâches de schema matching et de construction de KGs, mais leur intégration dans des pipelines de production reste un défi ouvert, notamment en raison de leur coût computationnel et de la variabilité de leurs sorties.
+
+Notre contribution, positionnée à l'intersection des travaux
+sur la triplification déclarative (RML/YARRRML), le schema
+matching hybride et l'automatisation par LLMs, vise à combler
+ces lacunes de manière intégrée et reproductible.
+Elle soulève cependant une question méthodologique fondamentale
+qui guidera le chapitre suivant : \textit{comment concevoir
+un pipeline qui soit à la fois suffisamment expressif pour
+capturer la diversité des formes d'hétérogénéité sémantique,
+et suffisamment robuste pour garantir la qualité du Knowledge
+Graph produit à grande échelle ?}
+Le chapitre~2 présente en détail l'architecture, les choix
+de conception et le protocole d'évaluation que nous
+proposons pour répondre à cette question.

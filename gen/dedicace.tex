@@ -1,0 +1,100 @@
+% ============================================================
+%  Dédicace — Mémoire de Master BIBDA — CHOUFA Zouhair
+% ============================================================
+\clearpage
+
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+    % Cadre décoratif discret aux quatre coins de la page
+    \draw[line width=1pt, titleblue]
+        ([shift={(1.5cm,-1.5cm)}]current page.north west) -- ++(1.4cm,0);
+    \draw[line width=1pt, titleblue]
+        ([shift={(1.5cm,-1.5cm)}]current page.north west) -- ++(0,-1.4cm);
+
+    \draw[line width=1pt, titleblue]
+        ([shift={(-1.5cm,-1.5cm)}]current page.north east) -- ++(-1.4cm,0);
+    \draw[line width=1pt, titleblue]
+        ([shift={(-1.5cm,-1.5cm)}]current page.north east) -- ++(0,-1.4cm);
+
+    \draw[line width=1pt, bordergreen]
+        ([shift={(1.5cm,1.5cm)}]current page.south west) -- ++(1.4cm,0);
+    \draw[line width=1pt, bordergreen]
+        ([shift={(1.5cm,1.5cm)}]current page.south west) -- ++(0,1.4cm);
+
+    \draw[line width=1pt, bordergreen]
+        ([shift={(-1.5cm,1.5cm)}]current page.south east) -- ++(-1.4cm,0);
+    \draw[line width=1pt, bordergreen]
+        ([shift={(-1.5cm,1.5cm)}]current page.south east) -- ++(0,1.4cm);
+
+    % Petit motif de noeud sémantique (rappel Knowledge Graph) en filigrane
+    \begin{scope}[opacity=0.55, shift={($(current page.center)+(0,-8.5cm)$)}]
+        \node[circle, draw=lineblue, fill=lineblue!15, minimum size=5pt, inner sep=0pt] (n1) at (0,0) {};
+        \node[circle, draw=titleblue, fill=titleblue!15, minimum size=5pt, inner sep=0pt] (n2) at (0.9,0.35) {};
+        \node[circle, draw=bordergreen, fill=bordergreen!15, minimum size=5pt, inner sep=0pt] (n3) at (1.6,-0.25) {};
+        \node[circle, draw=lineblue, fill=lineblue!15, minimum size=5pt, inner sep=0pt] (n4) at (-0.9,0.3) {};
+        \node[circle, draw=titleblue, fill=titleblue!15, minimum size=5pt, inner sep=0pt] (n5) at (-1.6,-0.2) {};
+        \draw[lineblue!70] (n1) -- (n2);
+        \draw[titleblue!70] (n2) -- (n3);
+        \draw[bordergreen!70] (n1) -- (n3);
+        \draw[lineblue!70] (n1) -- (n4);
+        \draw[titleblue!70] (n4) -- (n5);
+        \draw[bordergreen!70] (n1) -- (n5);
+    \end{scope}
+\end{tikzpicture}
+
+\vspace*{2.2cm}
+\begin{center}
+    {\Large \scshape \color{titleblue} \textbf{Dédicace}} \\[0.15cm]
+    \textcolor{bordergreen}{\rule{4.5cm}{0.8pt}}
+\end{center}
+
+\vspace{1.8cm}
+
+\begin{center}
+\begin{minipage}{0.82\textwidth}
+\setlength{\parindent}{0pt}
+\raggedright
+\Large
+\itshape
+
+À mes très chers parents, \\[0.3cm]
+\normalsize\upshape
+dont l'amour inconditionnel, les sacrifices silencieux et la confiance
+jamais démentie ont tracé, bien avant moi, le chemin de chacune de mes
+réussites. Que ce modeste travail soit le reflet, même imparfait, de
+tout ce que je vous dois.
+
+\vspace{0.9cm}
+\Large\itshape
+À mes frères et sœurs, \\[0.3cm]
+\normalsize\upshape
+pour votre soutien constant, vos encouragements dans les moments de
+doute, et la complicité qui nous unit depuis toujours.
+
+\vspace{0.9cm}
+\Large\itshape
+À mes amis et collègues de la promotion BIBDA, \\[0.3cm]
+\normalsize\upshape
+compagnons de cette aventure académique exigeante, avec qui chaque
+nuit blanche de débogage et chaque réussite ont pris un sens partagé.
+
+\vspace{0.9cm}
+\Large\itshape
+À tous ceux qui croient qu'une donnée brute, aussi hétérogène
+soit-elle, peut devenir connaissance structurée pour peu qu'on lui
+consacre la rigueur et la patience nécessaires, \\[0.3cm]
+\normalsize\upshape
+ce mémoire vous est dédié.
+
+\end{minipage}
+\end{center}
+
+\vfill
+\begin{center}
+    \textcolor{lineblue}{\rule{6cm}{0.6pt}}\\[0.25cm]
+    {\small \itshape ``Les données ne parlent pas d'elles-mêmes ;\\
+    c'est la structure qu'on leur donne qui les fait parler.''}
+\end{center}
+\vspace{1.5cm}
+
+\newpage

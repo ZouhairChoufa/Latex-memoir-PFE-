@@ -1,0 +1,73 @@
+% ============================================================
+%  Fichier principal : main.tex
+%  Mémoire de Master BIBDA — CHOUFA ZOUHAIR
+%  Université Chouaib Doukkali — Faculté des Sciences El Jadida
+% ============================================================
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{makecell}
+\usepackage{amssymb}
+\usepackage{pgfplots}
+\usetikzlibrary{calc}
+\pgfplotsset{compat=1.18}
+\usepackage[T1]{fontenc}
+\usetikzlibrary{positioning, fit, shapes.geometric}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% --- Couleurs pour la page de garde ---
+% \definecolor{lineblue}{RGB}{0, 102, 204}
+% \definecolor{bordergreen}{RGB}{0, 153, 76}
+% \definecolor{titleblue}{RGB}{0, 51, 102}
+
+\definecolor{lineblue}{RGB}{119,179,224}
+\definecolor{titleblue}{RGB}{20,118,186}
+\definecolor{bordergreen}{RGB}{128,186,104}
+
+\begin{document}
+
+% ─────────────────────────────────────────────────────────────
+%  PAGE DE GARDE ET ÉLÉMENTS LIMINAIRES
+% ─────────────────────────────────────────────────────────────
+\input{title.tex}
+\input{gen/dedicace.tex}
+\input{gen/remerciements.tex}
+\input{abstract.tex}
+
+% ─────────────────────────────────────────────────────────────
+%  TABLES ET LISTES
+% ─────────────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+\input{gen/figures.tex}
+\newpage
+\input{gen/tables.tex}
+\newpage
+\input{gen/abb_list.tex}
+\newpage
+
+% ─────────────────────────────────────────────────────────────
+%  CORPS DU MÉMOIRE
+% ─────────────────────────────────────────────────────────────
+\input{introduction.tex}
+\input{chap1.tex}
+\input{chap2.tex}
+\input{chap3.tex}
+\input{chap4.tex}
+\input{conclusion.tex}
+
+% ─────────────────────────────────────────────────────────────
+%  BIBLIOGRAPHIE
+% ─────────────────────────────────────────────────────────────
+\bibliographystyle{plain} 
+\bibliography{bibliographie}
+
+\end{document}  

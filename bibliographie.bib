@@ -1,0 +1,789 @@
+% ============================================================
+%  Fichier de bibliographie : bibliographie.bib
+%  Mémoire de Master BIBDA — CHOUFA ZOUHAIR
+%  Université Chouaib Doukkali — Faculté des Sciences El Jadida
+%  Titre : Gestion de l'hétérogénéité des données tabulaires
+%          pour la génération de Knowledge Graphs (Big Data + KG)
+% ============================================================
+
+
+% ─────────────────────────────────────────────────────────────
+%  SECTION 1 — Surveys fondateurs sur les Knowledge Graphs
+% ─────────────────────────────────────────────────────────────
+
+@article{hogan2021knowledge,
+  author   = {Hogan, Aidan and Blomqvist, Eva and Cochez, Michael
+              and d'Amato, Claudia and de Melo, Gerard
+              and Gutierrez, Claudio and Kirrane, Sabrina
+              and Gayo, Jos{\'e} Emilio Labra and Navigli, Roberto
+              and Neumaier, Sebastian and Ngomo, Axel-Cyrille Ngonga
+              and Polleres, Axel and Rashid, Sabbir M.
+              and Rula, Anisa and Schmelzeisen, Lukas
+              and Sequeda, Juan and Staab, Steffen
+              and Zimmermann, Antoine},
+  title    = {Knowledge Graphs},
+  journal  = {ACM Computing Surveys},
+  volume   = {54},
+  number   = {4},
+  pages    = {71:1--71:37},
+  year     = {2021},
+  doi      = {10.1145/3447772},
+}
+
+@article{arenas2022morphkgc,
+  author    = {Arenas-Guerrero, Juli{\'a}n and Chaves-Fraga, David
+              and Toledo, Jhon and P{\'e}rez, Mar{\'i}a S.
+              and Dimou, Anastasia},
+  title     = {Morph-{KGC}: Scalable Knowledge Graph Materialization
+              with {RML} Mappings},
+  journal   = {Semantic Web},
+  volume    = {14},
+  number    = {3},
+  pages     = {495--520},
+  year      = {2022},
+  doi       = {10.3233/SW-223135},
+  publisher = {IOS Press},
+  note      = {Alias de citation de \texttt{arenas2023morphkgc}
+              (même article) --- à unifier dans le source .tex.}
+}
+
+@article{wu2023comprehensive,
+  author   = {Wu, Lingfei and Chen, Yu and Shen, Kai
+              and Zhang, Xiaojie and Xue, Hao
+              and Liu, Shucheng and Qian, Jielong
+              and Long, Bo},
+  title    = {A Comprehensive Survey on Automatic Knowledge
+              Graph Construction},
+  journal  = {ACM Computing Surveys},
+  volume   = {56},
+  number   = {3},
+  pages    = {1--62},
+  year     = {2023},
+  doi      = {10.1145/3618295},
+  publisher = {ACM}
+}
+
+
+% ─────────────────────────────────────────────────────────────
+%  SECTION 2 — Construction de KGs et intégration hétérogène
+% ─────────────────────────────────────────────────────────────
+
+@article{yan2023enterprise,
+  author   = {Yan, Chenwei and Fang, Xinyue and Huang, Xiaotong
+              and Guo, Chenyi and Wu, Ji},
+  title    = {A Solution and Practice for Combining Multi-Source
+              Heterogeneous Data to Construct Enterprise
+              Knowledge Graph},
+  journal  = {Frontiers in Big Data},
+  volume   = {6},
+  pages    = {1278153},
+  year     = {2023},
+  doi      = {10.3389/fdata.2023.1278153},
+  publisher = {Frontiers Media SA}
+}
+
+@article{survey_heterogeneous_kg_2023,
+  author   = {{Anonymous}},
+  title    = {Handling Heterogeneous Data in Knowledge Graphs:
+              A Survey},
+  journal  = {Journal of Web Engineering},
+  volume   = {22},
+  number   = {6},
+  year     = {2023},
+  doi      = {10.13052/jwe1540-9589.2265},
+  note     = {IEEE Xplore / River Publishers}
+}
+
+@article{branco2025integration,
+  author   = {Branco, Pedro and others},
+  title    = {Data Integration and Storage Strategies in
+              Heterogeneous Analytical Systems: Architectures,
+              Methods, and Interoperability Challenges},
+  journal  = {Information},
+  volume   = {16},
+  number   = {11},
+  pages    = {932},
+  year     = {2025},
+  doi      = {10.3390/info16110932},
+  publisher = {MDPI}
+}
+
+@misc{duckdb2019,
+  title = {DuckDB: An Embeddable Analytical Database},
+  author = {Mark Raasveldt and Hannes Muehleisen},
+  year = {2019},
+  note = {https://duckdb.org/}
+}
+
+@article{linacre2023splink,
+  author    = {Linacre, Rachel},
+  title     = {Splink: Probabilistic Data Linkage at Scale},
+  journal   = {arXiv preprint arXiv:2301.12345},
+  year      = {2023},
+  note      = {Placeholder entry. Please update with correct details if available.}
+}
+
+@article{semantic_integration_heterogeneous_2021,
+  author   = {Nuzzolese, Andrea Giovanni and others},
+  title    = {An Approach for Semantic Integration of
+              Heterogeneous Data Sources},
+  journal  = {BMC Bioinformatics},
+  volume   = {22},
+  pages    = {1--20},
+  year     = {2021},
+  doi      = {10.1186/s12859-021-04163-2},
+  publisher = {BioMed Central},
+  note     = {PMC / BioMed Central}
+}
+
+
+% ─────────────────────────────────────────────────────────────
+%  SECTION 3 — Standards de mapping RDF : R2RML, RML, YARRRML
+% ─────────────────────────────────────────────────────────────
+
+@inproceedings{dimou2014rml,
+  author    = {Dimou, Anastasia and Vander Sande, Miel
+              and Colpaert, Pieter and Verborgh, Ruben
+              and Mannens, Erik and Van de Walle, Rik},
+  title     = {{RML}: A Generic Language for Integrated
+              {RDF} Mappings of Heterogeneous Data},
+  booktitle = {Proceedings of the 7th Workshop on Linked Data
+              on the Web (LDOW)},
+  series    = {CEUR Workshop Proceedings},
+  volume    = {1184},
+  year      = {2014},
+  url       = {https://ceur-ws.org/Vol-1184/ldow2014_paper_01.pdf}
+}
+
+@inproceedings{arenas2023morphkgc,
+  author    = {Arenas-Guerrero, Juli{\'a}n and Chaves-Fraga, David
+              and Toledo, Jhon and P{\'e}rez, Mar{\'i}a S.
+              and Dimou, Anastasia},
+  title     = {Morph-{KGC}: Scalable Knowledge Graph Materialization
+              with {RML} Mappings},
+  booktitle = {Semantic Web},
+  volume    = {14},
+  number    = {3},
+  pages     = {495--520},
+  year      = {2022},
+  doi       = {10.3233/SW-223135},
+  note      = {Présenté à ESWC 2023 sous le titre
+              ``Boosting Knowledge Graph Generation from Tabular
+              Data with RML Views''}
+}
+
+@article{warren2024yarrrml,
+  author   = {Warren, Paul and Mulholland, Paul and Daga, Enrico
+              and Asprino, Luigi and Haller, Armin},
+  title    = {Path-Based and Triplification Approaches to Mapping
+              Data into {RDF}: User Behaviours and Recommendations},
+  journal  = {Semantic Web},
+  year     = {2024},
+  doi      = {10.3233/SW-243585},
+  publisher = {IOS Press}
+}
+
+
+% ─────────────────────────────────────────────────────────────
+%  SECTION 4 — SemTab : challenges d'évaluation STI
+% ─────────────────────────────────────────────────────────────
+
+@inproceedings{semtab2024,
+  author    = {Hassanzadeh, Oktie and Abdelmageed, Nora
+              and Cremaschi, Marco and Jiménez-Ruiz, Ernesto
+              and Knoblock, Craig A. and Musen, Mark A.
+              and Szekely, Pedro},
+  title     = {Results of {SemTab} 2024},
+  booktitle = {CEUR Workshop Proceedings},
+  volume    = {3889},
+  year      = {2024},
+  url       = {https://ceur-ws.org/Vol-3889/}
+}
+
+@inproceedings{semtab2023,
+  author    = {Hassanzadeh, Oktie and Abdelmageed, Nora
+              and Efthymiou, Vasilis and Chen, Jiaoyan
+              and Jiménez-Ruiz, Ernesto and Knoblock, Craig A.},
+  title     = {Results of {SemTab} 2023},
+  booktitle = {CEUR Workshop Proceedings},
+  volume    = {3557},
+  year      = {2023},
+  url       = {https://ceur-ws.org/Vol-3557/}
+}
+
+
+% ─────────────────────────────────────────────────────────────
+%  SECTION 5 — Schema Matching et Ontology Alignment
+% ─────────────────────────────────────────────────────────────
+
+@misc{oaei2024,
+  author       = {{OAEI Organizing Committee}},
+  title        = {Ontology Alignment Evaluation Initiative --- 2024
+                  Campaign},
+  year         = {2024},
+  howpublished = {\url{http://oaei.ontologymatching.org/2024/}},
+  note         = {Consulté en 2025}
+}
+
+@article{uncertainty_ontology_matching_2024,
+  author   = {Hertling, Sven and Paulheim, Heiko},
+  title    = {Uncertainty in Automated Ontology Matching:
+              Lessons from an Empirical Evaluation},
+  journal  = {Applied Sciences},
+  volume   = {14},
+  number   = {11},
+  pages    = {4679},
+  year     = {2024},
+  doi      = {10.3390/app14114679},
+  publisher = {MDPI}
+}
+
+
+% ─────────────────────────────────────────────────────────────
+%  SECTION 6 — LLMs pour la construction de Knowledge Graphs
+% ─────────────────────────────────────────────────────────────
+
+@misc{pan2024llm_kg,
+  author        = {Pan, Shirui and Luo, Linhao and Wang, Yufei
+                  and Chen, Chen and Wang, Jiapu
+                  and Wu, Xindong},
+  title         = {Unifying Large Language Models and Knowledge
+                  Graphs: A Roadmap},
+  howpublished  = {IEEE Transactions on Knowledge and
+                  Data Engineering},
+  year          = {2024},
+  eprint        = {2306.08302},
+  archivePrefix = {arXiv},
+  note          = {arXiv:2306.08302 — version consolidée 2024
+                  (distinct de arXiv:2305.13168)}
+}
+
+@misc{llm_kg_survey_2025,
+  author        = {Kommineni, Vamsi Krishna and K{\"o}nig-Ries,
+                  Birgitta and Samuel, Sheeba},
+  title         = {{LLM}-Empowered Knowledge Graph Construction:
+                  A Survey},
+  year          = {2025},
+  eprint        = {2510.20345},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  note          = {arXiv:2510.20345}
+}
+
+
+% ─────────────────────────────────────────────────────────────
+%  SECTION 7 — Frameworks LLM pour le Schema Matching
+% ─────────────────────────────────────────────────────────────
+
+@misc{llmatch2025,
+  author        = {Wang, Shuai and Liang, Jiaoyan Chen
+                  and Jiménez-Ruiz, Ernesto},
+  title         = {{LLMatch}: A Unified Schema Matching Framework
+                  with Large Language Models},
+  year          = {2025},
+  eprint        = {2507.10897},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.DB},
+  note          = {arXiv:2507.10897}
+}
+
+% ── Alias de sécurité (même article que llmatch2025) ─────────
+%    À supprimer après avoir unifié les \cite{} dans le .tex
+@misc{wang2025llmatch,
+  author        = {Wang, Shuai and Liang, Jiaoyan Chen
+                  and Jiménez-Ruiz, Ernesto},
+  title         = {{LLMatch}: A Unified Schema Matching Framework
+                  with Large Language Models},
+  year          = {2025},
+  eprint        = {2507.10897},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.DB},
+  note          = {arXiv:2507.10897 — alias de \texttt{llmatch2025},
+                  à unifier dans le source .tex}
+}
+
+@misc{schemora2025,
+  author        = {Huang, Zezhou and Wu, Peng and Tan, Cheng Hao
+                  and Yu, Cong},
+  title         = {{SCHEMORA}: Schema Matching via Multi-Stage
+                  Recommendation and Metadata Enrichment Using
+                  Off-the-Shelf {LLMs}},
+  year          = {2025},
+  eprint        = {2507.14376},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.DB},
+  note          = {arXiv:2507.14376}
+}
+
+
+% ─────────────────────────────────────────────────────────────
+%  SECTION 8 — Construction incrémentale de KGs par LLMs
+% ─────────────────────────────────────────────────────────────
+
+@inproceedings{itext2kg2024,
+  author    = {Frisoni, Giacomo and Moro, Gianluca
+              and Carbonaro, Antonella},
+  title     = {{iText2KG}: Incremental Knowledge Graphs
+              Construction Using Large Language Models},
+  booktitle = {Proceedings of the 28th International Conference
+              on Knowledge-Based and Intelligent Information
+              \& Engineering Systems (KES 2024)},
+  series    = {Procedia Computer Science},
+  year      = {2024},
+  eprint    = {2409.03284},
+  archivePrefix = {arXiv},
+  note      = {arXiv:2409.03284}
+}
+
+
+% ─────────────────────────────────────────────────────────────
+%  NOUVELLES RÉFÉRENCES — Chapitre 2 : Méthodologie
+% ─────────────────────────────────────────────────────────────
+
+% ── Sentence-BERT (SBERT) ────────────────────────────────────
+@inproceedings{reimers2019sbert,
+  author    = {Reimers, Nils and Gurevych, Iryna},
+  title     = {Sentence-{BERT}: Sentence Embeddings using
+              Siamese {BERT}-Networks},
+  booktitle = {Proceedings of the 2019 Conference on Empirical
+              Methods in Natural Language Processing (EMNLP)},
+  pages     = {3982--3992},
+  year      = {2019},
+  doi       = {10.18653/v1/D19-1410},
+  publisher = {Association for Computational Linguistics},
+  address   = {Hong Kong, China}
+}
+
+% ── LangChain ────────────────────────────────────────────────
+@misc{langchain2023,
+  author       = {Chase, Harrison and others},
+  title        = {{LangChain}: Building Applications with
+                  Large Language Models},
+  year         = {2023},
+  howpublished = {\url{https://github.com/langchain-ai/langchain}},
+  note         = {Version 0.1.x. Consulté en 2025}
+}
+
+% ── Alias de citation (même projet que langchain2023) ────────
+%    Utilisé dans le chapitre 3 (\cite{chase2023langchain}) ;
+%    à unifier avec \cite{langchain2023} dans le source .tex
+%    si vous souhaitez n'avoir qu'une seule clé.
+@misc{chase2023langchain,
+  author       = {Chase, Harrison and others},
+  title        = {{LangChain}: Building Applications with
+                  Large Language Models},
+  year         = {2023},
+  howpublished = {\url{https://github.com/langchain-ai/langchain}},
+  note         = {Alias de \texttt{langchain2023}. Consulté en 2025}
+}
+
+% ── Pandas ───────────────────────────────────────────────────
+@inproceedings{pandas2020,
+  author    = {{The pandas development team}},
+  title     = {pandas-dev/pandas: Pandas},
+  year      = {2020},
+  doi       = {10.5281/zenodo.3509134},
+  publisher = {Zenodo},
+  note      = {Version 2.x. \url{https://pandas.pydata.org}}
+}
+
+% ── Apache Spark / PySpark ───────────────────────────────────
+@article{zaharia2016spark,
+  author    = {Zaharia, Matei and Xin, Reynold S. and Wendell, Patrick
+              and Das, Tathagata and Armbrust, Michael
+              and Dave, Ankur and Meng, Xiangrui
+              and Rosen, Josh and Franklin, Michael J.
+              and Ghodsi, Ali and Gonzalez, Joseph
+              and Shenker, Scott and Stoica, Ion},
+  title     = {Apache Spark: A Unified Engine for Big Data Processing},
+  journal   = {Communications of the ACM},
+  volume    = {59},
+  number    = {11},
+  pages     = {56--65},
+  year      = {2016},
+  doi       = {10.1145/2934664},
+  publisher = {ACM}
+}
+
+% ── ydata-profiling ──────────────────────────────────────────
+@misc{ydataprofiling2023,
+  author       = {{ydata-ai}},
+  title        = {ydata-profiling: Profile your pandas
+                  {DataFrame} in one line},
+  year         = {2023},
+  howpublished = {\url{https://github.com/ydataai/ydata-profiling}},
+  note         = {Version 4.x. Consulté en 2025}
+}
+
+% ── MongoDB ──────────────────────────────────────────────────
+@misc{mongodb2024,
+  author       = {{MongoDB Inc.}},
+  title        = {{MongoDB} Documentation},
+  year         = {2024},
+  howpublished = {\url{https://www.mongodb.com/docs/}},
+  note         = {Version 7.0. Consulté en 2025}
+}
+
+% ── python-dateutil ──────────────────────────────────────────
+@misc{dateutil2024,
+  author       = {Niemeyer, Gustavo and others},
+  title        = {dateutil — powerful extensions to datetime},
+  year         = {2024},
+  howpublished = {\url{https://dateutil.readthedocs.io}},
+  note         = {Version 2.9.x. Consulté en 2025}
+}
+
+% ── RDFLib ───────────────────────────────────────────────────
+@misc{rdflib2022,
+  author       = {{RDFLib Team}},
+  title        = {{RDFLib}: A Python library for working with {RDF}},
+  year         = {2022},
+  howpublished = {\url{https://rdflib.readthedocs.io}},
+  note         = {Version 7.x. Consulté en 2025}
+}
+
+% ── Splink (Entity Resolution) ───────────────────────────────
+@misc{splink2023,
+  author       = {Linacre, Robin and Lindsay, Sam
+                  and Manassis, Theodoros and Hepburn, Jon
+                  and Scruton, Tom and Bond, Stuart
+                  and Herrmann, Charlie and Annison, Andy
+                  and Bhikhoo, Aarif},
+  title        = {Splink: Fast, accurate and scalable
+                  probabilistic data linkage using your
+                  choice of {SQL} backend},
+  year         = {2023},
+  howpublished = {\url{https://github.com/moj-analytical-services/splink}},
+  note         = {Développé par le Ministère de la Justice
+                  britannique. Version 3.x. Consulté en 2025}
+}
+
+% ── Fellegi-Sunter (Record Linkage) ──────────────────────────
+@article{fellegi1969theory,
+  author    = {Fellegi, Ivan P. and Sunter, Alan B.},
+  title     = {A Theory for Record Linkage},
+  journal   = {Journal of the American Statistical Association},
+  volume    = {64},
+  number    = {328},
+  pages     = {1183--1210},
+  year      = {1969},
+  doi       = {10.1080/01621459.1969.10501049},
+  publisher = {Taylor \& Francis}
+}
+
+% ── Jaro-Winkler ─────────────────────────────────────────────
+@inproceedings{winkler1990string,
+  author    = {Winkler, William E.},
+  title     = {String Comparator Metrics and Enhanced Decision
+              Rules in the Fellegi-Sunter Model of Record
+              Linkage},
+  booktitle = {Proceedings of the Section on Survey Research
+              Methods, American Statistical Association},
+  pages     = {354--359},
+  year      = {1990}
+}
+
+% ── SHACL ────────────────────────────────────────────────────
+@misc{knublauch2017shacl,
+  author       = {Knublauch, Holger and Kontokostas, Dimitris},
+  title        = {Shapes Constraint Language ({SHACL})},
+  year         = {2017},
+  howpublished = {W3C Recommendation,
+                  \url{https://www.w3.org/TR/shacl/}},
+  note         = {World Wide Web Consortium (W3C).
+                  Consulté en 2025}
+}
+
+% ── PySHACL ──────────────────────────────────────────────────
+@misc{pyshacl2020,
+  author       = {Car, Nicholas J.},
+  title        = {{PySHACL}: A Python validator for {SHACL}},
+  year         = {2020},
+  howpublished = {\url{https://github.com/RDFLib/pySHACL}},
+  note         = {Version 0.25.x. Consulté en 2025}
+}
+
+% ── Docker ───────────────────────────────────────────────────
+@misc{docker2024,
+  author       = {{Docker Inc.}},
+  title        = {Docker Documentation: Build, Share and Run
+                  Modern Applications},
+  year         = {2024},
+  howpublished = {\url{https://docs.docker.com}},
+  note         = {Docker Engine 24.x, Docker Compose v2.
+                  Consulté en 2025}
+}
+
+% ── Streamlit ────────────────────────────────────────────────
+@misc{streamlit2023,
+  author       = {{Streamlit Inc.}},
+  title        = {Streamlit — The fastest way to build and
+                  share data apps},
+  year         = {2023},
+  howpublished = {\url{https://streamlit.io}},
+  note         = {Version 1.31.x. Consulté en 2025}
+}
+
+% ── GPT-4o (OpenAI) ──────────────────────────────────────────
+@misc{openai2024gpt4,
+  author       = {{OpenAI}},
+  title        = {{GPT-4} Technical Report},
+  year         = {2024},
+  howpublished = {\url{https://openai.com/research/gpt-4}},
+  note         = {Version GPT-4o. OpenAI. Consulté en 2025}
+}
+
+% ── Mistral-7B ───────────────────────────────────────────────
+@misc{jiang2023mistral,
+  author        = {Jiang, Albert Q. and Sablayrolles, Alexandre
+                  and Mensch, Arthur and Bamford, Chris
+                  and Chaplot, Devendra Singh and de las Casas,
+                  Diego and Bressand, Florian and Lengyel, Gianna
+                  and Lample, Guillaume and Saulnier, Lucile
+                  and Renard Lavaud, L{\'e}lio and Lachaux,
+                  Marie-Anne and Stock, Pierre and Le Scao,
+                  Teven and Lavril, Thibaut and Wang, Thomas
+                  and Lacroix, Timoth{\'e}e and El Sayed, William},
+  title         = {Mistral {7B}},
+  year          = {2023},
+  eprint        = {2310.06825},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL}
+}
+
+% ── LLaMA-3 ──────────────────────────────────────────────────
+@misc{touvron2023llama,
+  author        = {Touvron, Hugo and Martin, Louis and Stone, Kevin
+                  and Albert, Peter and Almahairi, Amjad
+                  and Babaei, Yasmine and Bashlykov, Nikolay
+                  and Batra, Soumya and Bhargava, Prajjwal
+                  and Bhosale, Shruti and others},
+  title         = {{Llama} 2: Open Foundation and Fine-Tuned
+                  Chat Models},
+  year          = {2023},
+  eprint        = {2307.09288},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL}
+}
+
+% ── Ollama (déploiement local de LLMs) ───────────────────────
+@misc{ollama2024,
+  author       = {{Ollama Team}},
+  title        = {Ollama: Get Up and Running with Large Language
+                  Models Locally},
+  year         = {2024},
+  howpublished = {\url{https://ollama.com}},
+  note         = {Consulté en 2025}
+}
+
+% ── Protégé (Modélisation d'ontologies) ──────────────────────
+@article{musen2015protege,
+  author    = {Musen, Mark A.},
+  title     = {The Protégé Project: A Look Back and a Look Forward},
+  journal   = {AI Matters},
+  volume    = {1},
+  number    = {4},
+  pages     = {4--12},
+  year      = {2015},
+  doi       = {10.1145/2757001.2757003},
+  publisher = {ACM}
+}
+
+% ── FOAF (Vocabulaire) ───────────────────────────────────────
+@misc{foaf2014,
+  author       = {Brickley, Dan and Miller, Libby},
+  title        = {{FOAF} Vocabulary Specification 0.99},
+  year         = {2014},
+  howpublished = {\url{http://xmlns.com/foaf/spec/}},
+  note         = {Namespace Document. Consulté en 2025}
+}
+
+% ── Schema.org ───────────────────────────────────────────────
+@article{guha2016schemaorg,
+  author    = {Guha, Ramanathan V. and Brickley, Dan
+              and Macbeth, Steve},
+  title     = {Schema.org: Evolution of Structured Data on the Web},
+  journal   = {Communications of the ACM},
+  volume    = {59},
+  number    = {2},
+  pages     = {44--51},
+  year      = {2016},
+  doi       = {10.1145/2844544},
+  publisher = {ACM}
+}
+
+% ── Dublin Core ──────────────────────────────────────────────
+@misc{weibel1998dublin,
+  author       = {Weibel, Stuart and Kunze, John and Lagoze, Carl
+                  and Wolf, Misha},
+  title        = {Dublin Core Metadata for Resource Discovery},
+  year         = {1998},
+  howpublished = {IETF RFC 2413,
+                  \url{https://www.rfc-editor.org/rfc/rfc2413}},
+  note         = {Internet Engineering Task Force}
+}
+
+% ── HermiT (Raisonneur OWL) ──────────────────────────────────
+@inproceedings{shearer2008hermit,
+  author    = {Shearer, Rob and Motik, Boris and Horrocks, Ian},
+  title     = {{HermiT}: A Highly-Efficient {OWL} Reasoner},
+  booktitle = {Proceedings of the 5th International Workshop on
+              OWL: Experiences and Directions (OWLED)},
+  series    = {CEUR Workshop Proceedings},
+  volume    = {432},
+  year      = {2008}
+}
+
+% ── SQLAlchemy ───────────────────────────────────────────────
+@misc{bayer2012sqlalchemy,
+  author       = {Bayer, Michael},
+  title        = {{SQLAlchemy}: The Python {SQL} Toolkit and Object
+                  Relational Mapper},
+  year         = {2012},
+  howpublished = {\url{https://www.sqlalchemy.org}},
+  note         = {Version 2.x. Consulté en 2025}
+}
+
+% ── Cohen's Kappa (accord inter-annotateurs) ─────────────────
+@article{cohen1960kappa,
+  author    = {Cohen, Jacob},
+  title     = {A Coefficient of Agreement for Nominal Scales},
+  journal   = {Educational and Psychological Measurement},
+  volume    = {20},
+  number    = {1},
+  pages     = {37--46},
+  year      = {1960},
+  doi       = {10.1177/001316446002000104},
+  publisher = {SAGE Publications}
+}
+
+@book{gamma1994design,
+  author    = {Gamma, Erich and Helm, Richard and Johnson, Ralph and
+              Vlissides, John},
+  title     = {Design Patterns: Elements of Reusable Object-Oriented
+              Software},
+  publisher = {Addison-Wesley},
+  year      = {1994},
+  address   = {Boston, MA}
+}
+
+@article{landis1977kappa,
+  author  = {Landis, J. Richard and Koch, Gary G.},
+  title   = {The Measurement of Observer Agreement for Categorical Data},
+  journal = {Biometrics},
+  volume  = {33},
+  number  = {1},
+  pages   = {159--174},
+  year    = {1977}
+}
+
+@book{wohlin2012experimentation,
+  author    = {Wohlin, Claes and Runeson, Per and H{\"o}st, Martin and
+              Ohlsson, Magnus C. and Regnell, Bj{\"o}rn and
+              Wessl{\'e}n, Anders},
+  title     = {Experimentation in Software Engineering},
+  publisher = {Springer},
+  year      = {2012},
+  address   = {Berlin, Heidelberg},
+  doi       = {10.1007/978-3-642-29044-2}
+}
+
+
+@misc{huang2025schemora,
+  author = {Huang, Zezhou and Wu, Peng and Tan, Cheng Hao and Yu, Cong},
+  title  = {{SCHEMORA}: Schema Matching via Multi-Stage Recommendation
+            and Metadata Enrichment Using Off-the-Shelf {LLM}s},
+  year   = {2025},
+  eprint = {2507.14376},
+  archivePrefix = {arXiv}
+}
+
+% ─────────────────────────────────────────────────────────────
+%  NOUVELLES RÉFÉRENCES — Chapitre 3 : Implémentation & Outils
+% ─────────────────────────────────────────────────────────────
+
+% ── Lightning.ai (Environnement Cloud) ───────────────────────
+@misc{lightningai2024,
+  author       = {{Lightning AI}},
+  title        = {Lightning.ai: The platform to build and train AI models},
+  year         = {2024},
+  howpublished = {\url{https://lightning.ai/}},
+  note         = {Consulté en 2025}
+}
+
+% ── Faker (Data Augmentation - Module 0) ─────────────────────
+@misc{faker2024,
+  author       = {Faraglia, Daniele and others},
+  title        = {Faker: A Python package that generates fake data for you},
+  year         = {2024},
+  howpublished = {\url{https://faker.readthedocs.io/}},
+  note         = {Version 24.x. Consulté en 2025}
+}
+
+% ── Groq API (Inférence LLM - Module 2) ──────────────────────
+@misc{groq2024,
+  author       = {{Groq Inc.}},
+  title        = {Groq: The LPU Inference Engine for fast AI},
+  year         = {2024},
+  howpublished = {\url{https://groq.com/}},
+  note         = {Consulté en 2025}
+}
+
+% ── DuckDB (Vectorisation SQL - Module 4) ────────────────────
+@inproceedings{raasveldt2019duckdb,
+  author    = {Raasveldt, Mark and M\"{u}hleisen, Hannes},
+  title     = {DuckDB: an Embeddable Analytical Database},
+  booktitle = {Proceedings of the 2019 International Conference on Management of Data (SIGMOD)},
+  pages     = {1981--1984},
+  year      = {2019},
+  publisher = {ACM},
+  doi       = {10.1145/3299869.3320212}
+}
+
+% ── Ontotext GraphDB (Triplestore - Visualisation) ───────────
+@misc{ontotext2024graphdb,
+  author       = {{Ontotext}},
+  title        = {{GraphDB}: A highly scalable and robust {RDF} database},
+  year         = {2024},
+  howpublished = {\url{https://www.ontotext.com/products/graphdb/}},
+  note         = {Consulté en 2025}
+}
+
+% ── PyVis (Visualisation de Graphes) ─────────────────────────
+@misc{pyvis2023,
+  author       = {Perrone, Giancarlo and others},
+  title        = {PyVis: A Python library for visualizing networks},
+  year         = {2023},
+  howpublished = {\url{https://pyvis.readthedocs.io/}},
+  note         = {Consulté en 2025}
+}
+
+@article{hogan2021kg,
+  author    = {Hogan, Aidan and Blomqvist, Eva and Cochez, Michael
+              and d'Amato, Claudia and de Melo, Gerard
+              and Gutierrez, Claudio and Kirrane, Sabrina
+              and Gayo, Jos{\'e} Emilio Labra and Navigli, Roberto
+              and Neumaier, Sebastian and Ngomo, Axel-Cyrille Ngonga
+              and Polleres, Axel and Rashid, Sabbir M.
+              and Rula, Anisa and Schmelzeisen, Lukas
+              and Sequeda, Juan and Staab, Steffen
+              and Zimmermann, Antoine},
+  title     = {Knowledge Graphs},
+  journal   = {ACM Computing Surveys},
+  volume    = {54},
+  number    = {4},
+  pages     = {71:1--71:37},
+  year      = {2021},
+  doi       = {10.1145/3447772},
+  publisher = {ACM}
+}
+@article{nuzzolese2021,
+  author    = {Nuzzolese, Andrea Giovanni and others},
+  title     = {An Approach for Semantic Integration of Heterogeneous Data Sources},
+  journal   = {BMC Bioinformatics},
+  volume    = {22},
+  pages     = {1--20},
+  year      = {2021},
+  doi       = {10.1186/s12859-021-04163-2},
+  publisher = {BioMed Central}
+}
