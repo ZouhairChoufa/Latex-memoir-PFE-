@@ -254,6 +254,49 @@ $\lambda$ & \textbf{Précision} & \textbf{Rappel} & \textbf{F1-score}
 \end{tabular}
 \end{table}
 
+
+\begin{figure}[H]
+\centering
+\resizebox{0.85\textwidth}{!}{
+\begin{tikzpicture}
+    \begin{axis}[
+        width=13cm, height=7cm,
+        xlabel={Seuil $\lambda$},
+        ylabel={Score},
+        xmin=0.78, xmax=1.0,
+        ymin=0.85, ymax=1.01,
+        grid=major,
+        grid style={dashed, gray!30},
+        legend pos=south west,
+        legend style={font=\footnotesize},
+    ]
+    % Précision
+    \addplot[color=blue!70!black, mark=*, thick] coordinates {
+        (0.80,0.951) (0.85,0.972) (0.90,0.988) (0.95,0.996) (0.99,0.999)
+    };
+    % Rappel
+    \addplot[color=orange!80!black, mark=square*, thick] coordinates {
+        (0.80,0.998) (0.85,0.997) (0.90,0.992) (0.95,0.966) (0.99,0.870)
+    };
+    % F1-score
+    \addplot[color=green!50!black, mark=triangle*, thick] coordinates {
+        (0.80,0.974) (0.85,0.984) (0.90,0.990) (0.95,0.981) (0.99,0.930)
+    };
+    % Ligne verticale marquant lambda* = 0.90
+    \addplot[color=red!70!black, dashed, thick, mark=none]
+        coordinates {(0.90,0.85) (0.90,1.01)};
+
+    \legend{Précision, Rappel, F1-score, \(\lambda^{*} = 0{,}90\)}
+    \end{axis}
+\end{tikzpicture}
+}
+\caption{Sensibilité du seuil de décision $\lambda$ du Module~4 après
+         recalibrage de la règle de blocage. Le F1-score maximal
+         ($0{,}990$) est atteint en $\lambda^{*} = 0{,}90$, point de
+         compromis optimal entre précision et rappel.}
+\label{fig:lambda_sensibilite}
+\end{figure}
+
 Le seuil $\lambda = 0{,}90$ maximise le F1-score (0,990) sur ce
 compromis, avec \textbf{1\,587~correspondances correctes} identifiées
 sur les \textbf{1\,600 paires réelles} (24 faux négatifs) et
@@ -262,6 +305,7 @@ de production du pipeline. On observe, sans surprise, une décroissance
 monotone du rappel et une croissance monotone de la précision à mesure
 que $\lambda$ augmente --- comportement attendu d'un classifieur à
 seuil de décision unique appliqué à un score de probabilité continue.
+
 
 \subsection{Discussion~: une leçon méthodologique généralisable}
 

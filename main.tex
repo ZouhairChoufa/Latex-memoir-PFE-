@@ -35,9 +35,24 @@
 \begin{document}
 
 % ─────────────────────────────────────────────────────────────
-%  PAGE DE GARDE ET ÉLÉMENTS LIMINAIRES
+%  PAGE DE GARDE (Sans numérotation visible)
 % ─────────────────────────────────────────────────────────────
+\hypersetup{pageanchor=false}
 \input{title.tex}
+\clearpage
+% --- NOUVELLE PAGE BLANCHE ---
+\thispagestyle{empty} % S'assure qu'aucun numéro n'apparaît
+\null                 % Insère une "boîte vide" pour tromper LaTeX
+\clearpage
+% -----------------------------
+
+% ─────────────────────────────────────────────────────────────
+%  ÉLÉMENTS LIMINAIRES — Numérotation Romaine (i, ii, iii...)
+% ─────────────────────────────────────────────────────────────
+\hypersetup{pageanchor=true}  
+\pagestyle{plain}             % <--- NOUVEAU : Force l'affichage visible des numéros en bas de page
+\pagenumbering{roman}         
+
 \input{gen/dedicace.tex}
 \input{gen/remerciements.tex}
 \input{abstract.tex}
@@ -52,11 +67,13 @@
 \input{gen/tables.tex}
 \newpage
 \input{gen/abb_list.tex}
-\newpage
+\clearpage                    
 
 % ─────────────────────────────────────────────────────────────
-%  CORPS DU MÉMOIRE
+%  CORPS DU MÉMOIRE — Numérotation Arabe (1, 2, 3...)
 % ─────────────────────────────────────────────────────────────
+\pagenumbering{arabic}        % Bascule en 1, 2, 3... (L'affichage reste visible grâce au \pagestyle{plain} précédent)
+
 \input{introduction.tex}
 \input{chap1.tex}
 \input{chap2.tex}
@@ -70,4 +87,4 @@
 \bibliographystyle{plain} 
 \bibliography{bibliographie}
 
-\end{document}  
+\end{document}
